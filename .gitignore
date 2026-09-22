@@ -48,3 +48,6 @@ next-env.d.ts
 
 # local reference material (never commit licensed template source)
 /reference-template/
+
+# local agent tooling metadata (machine-specific paths)
+/.atl/
