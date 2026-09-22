@@ -18,7 +18,7 @@
 }
 
 .back:hover {
-  color: var(--color-accent);
+  color: var(--color-accent-text);
 }
 
 /* Arrow points back, so flip the right-facing icon. */

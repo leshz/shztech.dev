@@ -40,7 +40,7 @@
 }
 
 .brand:hover {
-  color: var(--color-accent);
+  color: var(--color-accent-text);
 }
 
 /* ---- Desktop nav --------------------------------------------------------- */
@@ -75,11 +75,11 @@
 }
 
 .navLink:hover {
-  color: var(--color-accent);
+  color: var(--color-accent-text);
 }
 
 .navLink[aria-current="page"] {
-  color: var(--color-accent);
+  color: var(--color-accent-text);
 }
 
 /* ---- Actions -------------------------------------------------------------- */
@@ -106,7 +106,7 @@
 
 .menuTrigger:hover {
   border-color: var(--color-accent);
-  color: var(--color-accent);
+  color: var(--color-accent-text);
 }
 
 .menuTrigger:focus-visible {
@@ -156,9 +156,9 @@
 }
 
 .mobileLink:hover {
-  color: var(--color-accent);
+  color: var(--color-accent-text);
 }
 
 .mobileLink[aria-current="page"] {
-  color: var(--color-accent);
+  color: var(--color-accent-text);
 }

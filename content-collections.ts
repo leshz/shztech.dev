@@ -37,8 +37,16 @@ const postSchema = z.object({
 const WORDS_PER_MINUTE = 200;
 
 const rehypePrettyCodeOptions: RehypePrettyCodeOptions = {
-  // Dual themes so code blocks follow the site's light/dark token switch.
-  theme: { light: "github-light", dark: "github-dark" },
+  /*
+   * Dual themes so code blocks follow the site's light/dark token switch.
+   *
+   * `github-light-default` rather than `github-light`: the latter's token
+   * palette is tuned for a pure-white background and measured 3.06–4.22:1
+   * against our `--color-surface-raised` code background, failing WCAG AA.
+   * `keepBackground: false` keeps our own token background, so the theme's
+   * contrast assumptions have to hold against ours.
+   */
+  theme: { light: "github-light-default", dark: "github-dark-default" },
   keepBackground: false,
 };
 

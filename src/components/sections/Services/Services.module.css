@@ -30,7 +30,7 @@
   justify-content: center;
   width: var(--space-7);
   height: var(--space-7);
-  color: var(--color-accent);
+  color: var(--color-accent-text);
   background: var(--color-surface-raised);
 }
 

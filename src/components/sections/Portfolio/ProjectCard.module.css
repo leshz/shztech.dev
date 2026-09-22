@@ -59,7 +59,7 @@
 
 .headIcon {
   flex-shrink: 0;
-  color: var(--color-accent);
+  color: var(--color-accent-text);
 }
 
 .name {

@@ -32,7 +32,7 @@
 }
 
 .link {
-  color: var(--color-accent);
+  color: var(--color-accent-text);
   text-decoration: underline;
   text-underline-offset: 0.2em;
   transition: opacity var(--transition-base);
@@ -60,13 +60,21 @@
   border-radius: var(--radius);
 }
 
+/*
+ * Code background is --color-bg (white in light, #26262d in dark), not a
+ * raised surface. Shiki's GitHub themes pick their token colours assuming the
+ * editor background: measured against --color-surface-raised (#f0f0f0), four
+ * of ten text tokens dropped below WCAG AA (worst 3.06:1); against the page
+ * background all ten pass. The border still separates the block visually, so
+ * nothing is lost by not tinting it.
+ */
 .pre {
   margin: var(--space-5) 0;
   padding: var(--space-4);
   overflow-x: auto;
   font-size: var(--font-size-sm);
   line-height: var(--line-height-base);
-  background: var(--color-surface-raised);
+  background: var(--color-bg);
   border: 1px solid var(--color-border);
   border-radius: var(--radius);
 }
@@ -105,7 +113,7 @@
 }
 
 .pre :global([data-highlighted-line]) {
-  background: var(--color-surface);
+  background: var(--color-surface-raised);
   box-shadow: inset 2px 0 0 var(--color-accent);
 }
 

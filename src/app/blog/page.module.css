@@ -59,7 +59,7 @@
 
 .link:hover .title,
 .link:focus-visible .title {
-  color: var(--color-accent);
+  color: var(--color-accent-text);
 }
 
 .description {

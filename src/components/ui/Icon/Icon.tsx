@@ -231,7 +231,12 @@ type CommonIconProps = {
   size?: number;
   className?: string;
   strokeWidth?: number;
-  "aria-hidden"?: boolean;
+  /**
+   * Admits an explicit `undefined` so a labelled icon can CLEAR the
+   * `aria-hidden="true"` that the hand-authored brand SVGs hardcode. Under
+   * `exactOptionalPropertyTypes` a plain `?: boolean` would reject that.
+   */
+  "aria-hidden"?: boolean | undefined;
   focusable?: boolean;
   "aria-label"?: string;
   role?: string;
@@ -280,9 +285,16 @@ export function Icon({
     size,
     ...(className !== undefined ? { className } : {}),
     ...(strokeWidth !== undefined ? { strokeWidth } : {}),
+    /*
+     * The labelled branch must actively clear `aria-hidden`, not merely omit
+     * it: the hand-authored brand SVGs hardcode `aria-hidden="true"` in their
+     * own JSX, and these props spread AFTER it. Omitting the key left both
+     * `aria-hidden="true"` and `aria-label` on the element — aria-hidden wins,
+     * so an icon-only link ended up with no accessible name at all.
+     */
     ...(decorative
       ? { "aria-hidden": true, focusable: false }
-      : { "aria-label": ariaLabel, role: "img" }),
+      : { "aria-hidden": undefined, "aria-label": ariaLabel, role: "img" }),
   };
 
   return <IconComponent {...sharedProps} />;

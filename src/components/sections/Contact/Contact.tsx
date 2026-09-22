@@ -46,9 +46,16 @@ export function Contact() {
             <ul className={styles.socials}>
               {site.socials.map((social) => (
                 <li key={social.platform}>
+                  {/*
+                    The accessible name goes on the LINK, with the icon left
+                    decorative. Labelling the icon instead makes the name
+                    depend on the SVG's own aria handling; the link is what
+                    lands in the tab order and the screen-reader link list.
+                  */}
                   <a
                     href={social.url}
                     className={styles.socialLink}
+                    aria-label={social.label}
                     target={social.platform === "email" ? undefined : "_blank"}
                     rel={
                       social.platform === "email"
@@ -56,10 +63,7 @@ export function Contact() {
                         : "noopener noreferrer"
                     }
                   >
-                    <Icon
-                      name={socialIconMap[social.platform]}
-                      aria-label={social.label}
-                    />
+                    <Icon name={socialIconMap[social.platform]} />
                   </a>
                 </li>
               ))}

@@ -27,7 +27,12 @@
   /* ---- Colours: content ------------------------------------------------- */
   --color-text: #363636;
   --color-text-strong: #141414;
-  --color-text-muted: #999999;
+  /* Darkened from the reference design's #999999, which measured 2.85:1 on
+     white — a WCAG AA failure Lighthouse flagged on every muted element
+     (dates, descriptions, tags, back links). #6e6e6e measures 5.10:1 and
+     still reads as clearly secondary. The dark theme's muted value already
+     passed at 5.91:1 and is unchanged. */
+  --color-text-muted: #6e6e6e;
   --color-border: #dddddd;
 
   /* ---- Colours: brand + state ------------------------------------------- */
@@ -42,6 +47,15 @@
        #141414 on --color-accent-alt (#ede574) = 14.09:1 ✓
      White would be 3.03:1 and 1.31:1 respectively — both failures. */
   --color-on-accent: #141414;
+
+  /* Accent for TEXT on a page surface (links, inline emphasis).
+     --color-accent itself is a fill colour: at #f26b38 it measures only
+     3.03:1 on white, so using it for body-size text fails WCAG AA. This
+     darkened variant measures 5.02:1 on white. In the dark theme the plain
+     accent already measures 4.96:1 on the page background, so this token is
+     redefined there to the brand hue itself. Use --color-accent for fills
+     and borders, --color-accent-text for text. */
+  --color-accent-text: #c44417;
 
   /* Absolute white, for the rare place a true white is meant regardless of
      theme. NOT the right choice on an accent surface — use --color-on-accent. */
@@ -123,7 +137,12 @@
   --color-text-muted: #a2a2a6;
   --color-border: #666666;
 
-  /* Accent, accent-alt and white are intentionally unchanged: the brand hues
-     carry enough contrast on the dark surfaces, so the accent stays a
-     one-line change in :root. */
+  /* On the dark page background the brand accent measures 4.96:1, so link
+     text can use the real brand hue here rather than the darkened variant
+     that light mode needs for contrast. */
+  --color-accent-text: #f26b38;
+
+  /* Accent, accent-alt, on-accent and white are intentionally unchanged: the
+     brand hues carry enough contrast on the dark surfaces, so changing the
+     accent stays a one-line edit in :root. */
 }
