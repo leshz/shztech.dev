@@ -69,7 +69,12 @@
   margin: 0;
 }
 
-.empty {
-  color: var(--color-text-muted);
-  font-size: var(--font-size-base);
+/* Heading for a secondary group inside the section (e.g. Education). */
+.subheading {
+  margin-top: var(--space-7);
+  margin-bottom: var(--space-5);
+  color: var(--color-text-strong);
+  font-size: var(--font-size-h5);
+  text-transform: uppercase;
+  letter-spacing: var(--letter-spacing-wide);
 }

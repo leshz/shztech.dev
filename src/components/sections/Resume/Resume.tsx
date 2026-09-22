@@ -39,26 +39,32 @@ export function Resume() {
           ))}
         </ol>
 
-        {education.length === 0 ? (
-          <p className={styles.empty}>
-            Education details are not published yet.
-          </p>
-        ) : (
-          <ol className={styles.timeline}>
-            {education.map((item) => (
-              <li
-                key={`${item.institution}-${item.degree}`}
-                className={styles.item}
-              >
-                <div className={styles.header}>
-                  <h3 className={styles.role}>{item.degree}</h3>
-                  <span className={styles.company}>{item.institution}</span>
-                </div>
-                <p className={styles.summary}>{item.field}</p>
-              </li>
-            ))}
-          </ol>
-        )}
+        {/*
+          Education renders only when there is real data. `education` is
+          currently an empty array by design — no verified details were
+          available, and neither inventing a university nor advertising the
+          gap ("not published yet") serves the reader. Populate
+          src/data/resume.ts and the block appears with its heading.
+        */}
+        {education.length > 0 ? (
+          <>
+            <h3 className={styles.subheading}>Education</h3>
+            <ol className={styles.timeline}>
+              {education.map((item) => (
+                <li
+                  key={`${item.institution}-${item.degree}`}
+                  className={styles.item}
+                >
+                  <div className={styles.header}>
+                    <h4 className={styles.role}>{item.degree}</h4>
+                    <span className={styles.company}>{item.institution}</span>
+                  </div>
+                  <p className={styles.summary}>{item.field}</p>
+                </li>
+              ))}
+            </ol>
+          </>
+        ) : null}
       </div>
     </section>
   );
