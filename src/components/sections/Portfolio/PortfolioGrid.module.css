@@ -1,0 +1,158 @@
+/* ==========================================================================
+   Portfolio grid — native CSS Grid, no layout library.
+
+   The isotope-layout replacement. `repeat(auto-fill, minmax(18rem, 1fr))`
+   lets the browser pick the column count from the container's own width, so
+   the grid reflows on resize, on font-size changes and on container changes
+   with zero JS measurement and zero absolute positioning.
+
+   Deliberate visual difference from Isotope: this is an EQUAL-HEIGHT row
+   grid, not true masonry. Cards in a row share the tallest card's height
+   instead of bricking upward into the gaps. Reason: `grid-template-rows:
+   masonry` is not broadly shipped, and the CSS-only alternatives
+   (multi-column, or fixed row spans) break reading order or need JS
+   measurement — the exact dependency we removed. Equal-height rows keep DOM
+   order == visual order, which is what keyboard and screen-reader users
+   traverse.
+   ========================================================================== */
+
+.wrap {
+  min-width: 0;
+}
+
+/* ---- Filter bar -------------------------------------------------------- */
+
+/* `<fieldset>` carries a UA border, margin and padding; strip all three so it
+   is a pure layout row. `min-width: 0` defeats the fieldset's built-in
+   min-content floor, which would otherwise resist shrinking at 320px. */
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  min-width: 0;
+  margin: 0 0 var(--space-4);
+  padding: 0;
+  border: 0;
+}
+
+/* Visually hidden, still in the a11y tree: the group needs a name, but the
+   section heading already tells a sighted reader what these buttons do. */
+.filtersLegend {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+.filter {
+  padding: var(--space-1) var(--space-3);
+  background: transparent;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  color: var(--color-text-muted);
+  font-family: var(--font-sans);
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  letter-spacing: var(--letter-spacing-wide);
+  text-transform: uppercase;
+  white-space: nowrap;
+  cursor: pointer;
+  transition:
+    color var(--transition-base),
+    border-color var(--transition-base),
+    background-color var(--transition-base);
+}
+
+.filter:hover {
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+}
+
+.filter:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+/*
+ * Active state is carried by BOTH `aria-pressed` (for AT) and this class
+ * (for sight). Dark ink on the accent fill — white measures 3.03:1 there.
+ */
+.filterActive {
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+  color: var(--color-on-accent);
+}
+
+.filterActive:hover {
+  background: var(--color-accent-alt);
+  border-color: var(--color-accent-alt);
+  color: var(--color-on-accent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .filter {
+    transition: none;
+  }
+}
+
+/* ---- Result count (live region) ---------------------------------------- */
+
+.count {
+  margin: 0 0 var(--space-5);
+  color: var(--color-text-muted);
+  font-size: var(--font-size-xs);
+  letter-spacing: var(--letter-spacing-wide);
+  text-transform: uppercase;
+}
+
+/* ---- Grid -------------------------------------------------------------- */
+
+.grid {
+  display: grid;
+  gap: var(--space-5);
+  /* Single column below the first breakpoint: at 320px an 18rem track plus
+     the section gutter would overflow, so mobile gets one full-width track. */
+  grid-template-columns: minmax(0, 1fr);
+  align-items: stretch;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+@media (min-width: 30rem) {
+  .grid {
+    /* `auto-fill` + `minmax(0, 1fr)` as the max: the `1fr` max keeps a long
+       unbreakable string from widening a track past its share, which is what
+       causes horizontal page overflow. */
+    grid-template-columns: repeat(auto-fill, minmax(min(18rem, 100%), 1fr));
+  }
+}
+
+.cell {
+  display: flex;
+  min-width: 0;
+}
+
+/* ---- Card entry animation ---------------------------------------------
+   The global reduced-motion clamp cannot use `!important` (Biome forbids it),
+   so it does NOT override component animations. This module therefore ships
+   its own opt-out below — required, not optional.
+   ---------------------------------------------------------------------- */
+
+.card {
+  animation: reveal var(--transition-base) both;
+  /* Small stagger so a filter change reads as a sequence, not a flash.
+     `--card-index` is set inline per cell. */
+  animation-delay: calc(var(--card-index, 0) * 0.06s);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card {
+    animation: none;
+    animation-delay: 0s;
+  }
+}

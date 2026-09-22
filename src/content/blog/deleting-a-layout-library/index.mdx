@@ -1,0 +1,112 @@
+---
+title: "Deleting a layout library"
+description: "Isotope positioned every grid item with absolute coordinates it measured in JavaScript. CSS Grid does the same job in four lines and cannot desynchronise."
+date: 2026-09-21
+tags: ["react", "css", "performance"]
+draft: false
+---
+
+The portfolio grid I inherited depended on [Isotope](https://isotope.metafizzy.co/),
+a masonry-and-filtering library from the jQuery era. Removing it made the page
+faster, the code shorter, and a class of bug impossible. Here is the reasoning,
+because "delete the dependency" is advice that deserves more than assertion.
+
+## What it was doing
+
+Isotope reads the width of every child, computes an absolute position for each,
+and writes those coordinates back as inline styles. It is a layout engine
+implemented in JavaScript, written when CSS had no layout engine worth the name.
+
+The integration looked like this:
+
+```js
+useEffect(() => {
+  setTimeout(() => {
+    isotope.current = new Isotope(".blog-items", {
+      itemSelector: ".box-item",
+      percentPosition: true,
+      masonry: { columnWidth: ".box-item" },
+    });
+  }, 1000);
+  // return () => isotope.current.destroy();
+}, []);
+```
+
+Three things are wrong here, and the third is the interesting one.
+
+**The `setTimeout(…, 1000)`** is a race being papered over. The library needs the
+DOM measured after layout and fonts settle; rather than wait for a signal, the
+code waits one second and hopes. On a slow connection it fires too early and the
+grid collapses. On a fast one the user stares at unpositioned items for a second
+they didn't need to lose.
+
+**The cleanup is commented out.** Look at that third line. Under React's
+development Strict Mode, effects mount, unmount, and mount again deliberately, to
+surface exactly this. With `destroy()` disabled, you get two Isotope instances
+fighting over the same nodes' inline styles.
+
+**The library owns the DOM that React thinks it owns.** This is the deep problem.
+React's model is that it alone writes to the tree it rendered. Isotope writes
+absolute positions onto those same nodes. Neither knows about the other, so any
+re-render restores React's version and silently discards the layout — until the
+next resize event puts it back. Two sources of truth for one set of coordinates.
+
+## What replaced it
+
+```css
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr));
+  gap: var(--space-5);
+}
+```
+
+That is the entire layout. `auto-fill` with `minmax` reflows at every viewport
+width with no measurement, no JavaScript, no resize listener, and nothing to
+desynchronise — the browser's layout engine was always going to be better at
+this than a script, because it runs before paint rather than after it.
+
+Filtering became state, and a filtered array:
+
+```tsx
+const visible =
+  filter === "All"
+    ? projects
+    : projects.filter((project) => project.category === filter);
+```
+
+Note that this filters *before* rendering rather than hiding with
+`display: none`. Hidden-but-present cards stay in the accessibility tree, so a
+screen-reader user would hear projects a sighted user had just filtered away.
+
+## The honest trade-off
+
+I did not get a true masonry layout back. CSS Grid gives equal-height rows;
+Isotope packed items of unequal height into tight columns. For a portfolio of
+cards whose content I control, equal heights actually look more deliberate, so
+this was a free trade — but it *is* a trade. If I genuinely needed masonry I
+would reach for native CSS masonry where supported and accept a column-based
+fallback, not reinstall a JavaScript layout engine.
+
+## The part that generalises
+
+Before deleting, I checked the library's state:
+
+```
+$ npm view isotope-layout version time.modified
+version = '3.0.6'
+time.modified = '2022-06-19T03:05:18.401Z'
+```
+
+Last published in 2022, and it ships no TypeScript types. Both facts matter, but
+neither is the actual argument. The argument is that **the platform grew a
+feature that made the dependency's reason for existing obsolete**, and nobody
+went back to check.
+
+That is worth building a habit around. When you find a dependency doing layout,
+animation, state, fetching, or date formatting, ask what year it was written in
+and what the platform has shipped since. Flexbox, Grid, `fetch`,
+`IntersectionObserver`, `Intl`, `:has()`, container queries, and view transitions
+each retired a category of library. The libraries do not announce their own
+retirement, and a workaround for a missing feature tends to outlive the gap it
+filled by a decade.

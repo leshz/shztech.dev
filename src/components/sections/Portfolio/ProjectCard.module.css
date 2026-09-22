@@ -1,0 +1,130 @@
+/* ==========================================================================
+   Project card — presentational shell for one project.
+
+   Equal-height card (stretched by the grid row) with the action row pinned to
+   the bottom via `margin-block-start: auto`, so a short description does not
+   leave the buttons floating mid-card.
+   ========================================================================== */
+
+.card {
+  display: flex;
+  flex-direction: column;
+  /* Fill the grid row: `align-items: stretch` on the track plus 100% height
+     gives every card in a row the same height without JS measurement. */
+  height: 100%;
+  min-width: 0;
+  padding: var(--space-5);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  transition:
+    border-color var(--transition-base),
+    background-color var(--transition-base),
+    transform var(--transition-base);
+}
+
+/* Whole-card hover affordance, without making the card one giant anchor. */
+.card:hover {
+  border-color: var(--color-accent);
+  background: var(--color-surface-raised);
+  transform: translate3d(0, -2px, 0);
+}
+
+/* Lifts the card when either inner link is keyboard-focused, so keyboard
+   users get the same affordance mouse users get on hover. */
+.card:focus-within {
+  border-color: var(--color-accent);
+  background: var(--color-surface-raised);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card {
+    transition: none;
+  }
+
+  .card:hover {
+    transform: none;
+  }
+}
+
+/* ---- Head -------------------------------------------------------------- */
+
+.head {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+  margin-bottom: var(--space-3);
+}
+
+.headIcon {
+  flex-shrink: 0;
+  color: var(--color-accent);
+}
+
+.name {
+  /* `min-width: 0` + wrap-anywhere: a long unbroken project name shrinks
+     instead of pushing the card past its track. */
+  min-width: 0;
+  margin: 0;
+  color: var(--color-text-strong);
+  font-size: var(--font-size-h5);
+  font-weight: 600;
+  line-height: var(--line-height-tight);
+  letter-spacing: var(--letter-spacing-default);
+  overflow-wrap: anywhere;
+}
+
+.featured {
+  flex-shrink: 0;
+  padding: 0 var(--space-2);
+  background: var(--color-accent-alt);
+  /* Dark ink on an accent surface — white measures 1.31:1 here. */
+  color: var(--color-on-accent);
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  letter-spacing: var(--letter-spacing-wide);
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+/* ---- Body -------------------------------------------------------------- */
+
+.description {
+  margin: 0 0 var(--space-4);
+  color: var(--color-text);
+  font-size: var(--font-size-base);
+  line-height: var(--line-height-base);
+  overflow-wrap: anywhere;
+}
+
+/* ---- Stack tags -------------------------------------------------------- */
+
+.stack {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin: 0 0 var(--space-5);
+  padding: 0;
+  list-style: none;
+}
+
+.tag {
+  padding: 0 var(--space-2);
+  border: 1px solid var(--color-border);
+  color: var(--color-text-muted);
+  font-size: var(--font-size-xs);
+  letter-spacing: var(--letter-spacing-wide);
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+/* ---- Actions ----------------------------------------------------------- */
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  /* Pins the row to the card's bottom edge regardless of body length. */
+  margin-block-start: auto;
+}
