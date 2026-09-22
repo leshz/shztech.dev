@@ -24,6 +24,63 @@
    `prefers-reduced-motion: reduce`.
    ========================================================================== */
 
+/*
+ * ACCESSIBLE USAGE (preferred). Chrome exposes CSS-generated `content` to the
+ * accessibility tree, so putting `data-text` directly on the heading made it
+ * announce three times. Split the roles instead:
+ *
+ *   <h1>
+ *     <span class={glitchLayers} data-text="Name" aria-hidden="true" />
+ *     <span class={glitchText}>Name</span>
+ *   </h1>
+ *
+ * `.glitchText` is the one real, accessible text node; `.glitchLayers` is a
+ * decorative overlay hidden from assistive tech.
+ */
+
+.glitchText {
+  position: relative;
+  display: inline-block;
+  color: var(--color-text-strong);
+}
+
+/* Zero-size anchor: the two animated copies are its pseudo-elements. */
+.glitchLayers {
+  position: relative;
+  display: inline-block;
+  width: 0;
+  height: 0;
+}
+
+.glitchLayers::before,
+.glitchLayers::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: max-content;
+  background: var(--color-bg);
+  overflow: hidden;
+  pointer-events: none;
+  clip-path: inset(50% 0 50% 0);
+}
+
+.glitchLayers::before {
+  transform: translate3d(-2px, 0, 0);
+  text-shadow: 2px 0 var(--color-accent);
+  animation: glitch-alt 2s infinite linear alternate-reverse;
+}
+
+.glitchLayers::after {
+  transform: translate3d(2px, 0, 0);
+  text-shadow: -1px 0 var(--color-accent-alt);
+  animation: glitch 2s infinite linear alternate-reverse;
+}
+
+/*
+ * LEGACY single-element form, kept for non-heading decorative text where a
+ * duplicate accessible name does not matter. Prefer the split form above.
+ */
 .glitch {
   position: relative;
   display: inline-block;
@@ -55,24 +112,13 @@
   animation: glitch 2s infinite linear alternate-reverse;
 }
 
-/* Accent-toned variant, for a glitching accent-coloured headline. */
-.glitchAccent {
-  color: var(--color-accent);
-}
-
-.glitchAccent::before {
-  text-shadow: 2px 0 var(--color-text-strong);
-}
-
-.glitchAccent::after {
-  text-shadow: -1px 0 var(--color-accent-alt);
-}
-
 /* No infinitely-animating headline for motion-sensitive visitors: drop the
    layers entirely so only the plain, legible text remains. */
 @media (prefers-reduced-motion: reduce) {
   .glitch::before,
-  .glitch::after {
+  .glitch::after,
+  .glitchLayers::before,
+  .glitchLayers::after {
     content: none;
     animation: none;
   }

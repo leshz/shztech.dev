@@ -1,5 +1,4 @@
 import { Button } from "@/components/ui/Button/Button";
-import { Icon } from "@/components/ui/Icon/Icon";
 import { site } from "@/data/site";
 import glitch from "@/styles/glitch.module.css";
 import section from "@/styles/section.module.css";
@@ -13,11 +12,20 @@ export function Hero() {
   return (
     <section className={`${section.section} ${styles.hero}`}>
       <div className={`${section.content} ${styles.inner}`}>
-        <h1
-          className={`${section.display} ${glitch.glitch}`}
-          data-text={site.name}
-        >
-          {site.name}
+        {/*
+          The glitch layers are ::before/::after with `content: attr(data-text)`.
+          Chrome exposes CSS-generated content to the accessibility tree, so the
+          heading was announced three times ("Jeffer Barragán" ×3). Carrying
+          data-text on an aria-hidden decorative span, with the real text in its
+          own span, keeps the effect and leaves one accessible name.
+        */}
+        <h1 className={section.display}>
+          <span
+            className={glitch.glitchLayers}
+            data-text={site.name}
+            aria-hidden="true"
+          />
+          <span className={glitch.glitchText}>{site.name}</span>
         </h1>
         <p className={styles.role}>
           {site.role} · <span className={styles.focus}>{site.focus}</span>
@@ -32,9 +40,6 @@ export function Hero() {
           </Button>
         </div>
       </div>
-      <span className={styles.scrollHint} aria-hidden="true">
-        <Icon name="mouse" />
-      </span>
     </section>
   );
 }

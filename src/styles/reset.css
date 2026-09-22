@@ -184,7 +184,14 @@ svg {
   height: auto;
 }
 
-svg {
+/*
+ * Only inherit the text colour for SVGs that actually paint a fill.
+ * A blanket `svg { fill: currentColor }` would override the `fill="none"`
+ * presentational attribute on stroke-based icons (all of lucide's), because
+ * CSS beats presentational attributes — which paints their outline shapes
+ * solid and renders e.g. the envelope icon as a filled rectangle.
+ */
+svg:not([fill="none"]) {
   fill: currentColor;
 }
 

@@ -7,11 +7,21 @@
    without hardcoding a pixel literal.
    ========================================================================== */
 
+/*
+ * `min-height` is intentionally well under a full viewport. The shared
+ * `.section` primitive already contributes its own vertical padding, so
+ * reserving a full `100svh` on top of that left ~380px of dead space around
+ * ~290px of content. A content-driven height with a generous floor keeps the
+ * hero feeling spacious without the void.
+ *
+ * `svh` (small viewport height) rather than `vh` so mobile browser chrome
+ * never clips it.
+ */
 .hero {
   display: flex;
   align-items: center;
-  min-height: calc(100svh - var(--space-8));
-  padding-block: var(--space-8);
+  min-height: min(32rem, 70svh);
+  padding-block: var(--space-7);
 }
 
 .inner {
@@ -45,27 +55,8 @@
   margin-top: var(--space-2);
 }
 
-/* ---- Scroll hint --------------------------------------------------------
-   Decorative bottom affordance. Absolutely positioned against the section,
-   which is why `.hero` needs `position: relative`.
-   ---------------------------------------------------------------------- */
-
-.hero {
-  position: relative;
-}
-
-.scrollHint {
-  position: absolute;
-  bottom: var(--space-6);
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  color: var(--color-text-muted);
-  animation: scroll-hint 2s ease-in-out infinite;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .scrollHint {
-    animation: none;
-  }
-}
+/*
+ * No scroll-hint affordance here on purpose: the hero is no longer a full
+ * viewport tall, so the next section is already visible and a "scroll down"
+ * cue would point at something the visitor can see.
+ */

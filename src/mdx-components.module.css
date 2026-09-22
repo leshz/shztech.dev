@@ -78,6 +78,37 @@
   font-size: inherit;
 }
 
+/*
+ * Shiki dual-theme activation.
+ *
+ * With `theme: { light, dark }`, rehype-pretty-code emits BOTH palettes as
+ * custom properties per token (`--shiki-light` / `--shiki-dark`) and colours
+ * nothing by itself — these rules are what actually paint it, and without them
+ * highlighted code renders as flat body text.
+ *
+ * `:global` is required: the spans are generated at build time by the rehype
+ * plugin, so CSS Modules cannot hash their (absent) class names, and the
+ * `[data-theme]` attribute lives on <html>, outside this module's scope.
+ */
+.pre :global(span) {
+  color: var(--shiki-light);
+}
+
+:global([data-theme="dark"]) .pre :global(span) {
+  color: var(--shiki-dark);
+}
+
+/* Line numbers / highlighted lines, when a code fence opts into them. */
+.pre :global([data-line]) {
+  display: inline-block;
+  width: 100%;
+}
+
+.pre :global([data-highlighted-line]) {
+  background: var(--color-surface);
+  box-shadow: inset 2px 0 0 var(--color-accent);
+}
+
 .blockquote {
   margin: var(--space-5) 0;
   padding: var(--space-2) var(--space-4);
