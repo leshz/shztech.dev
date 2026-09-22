@@ -91,6 +91,22 @@ draft: false
 Content here. Supports MDX, so React components work inline.
 ```
 
+### Drafts
+
+Set `draft: true` to keep a post in the repository and out of production. It stays fully editable — `pnpm dev` lists it and renders it at its real URL, so you can preview exactly what will ship — while production excludes it from **all five** surfaces:
+
+| Surface | Draft in `pnpm dev` | Draft in production |
+|---|---|---|
+| `/blog` listing | visible | hidden |
+| `/blog/<slug>` | 200 | **404** |
+| `/blog/<slug>/opengraph-image` | 200 | **404** |
+| `sitemap.xml` | — | absent |
+| `rss.xml` | — | absent |
+
+The rule is one predicate (`isPublished` in `src/lib/content/posts.ts`) and every consumer reads posts through that port, so there is no path that bypasses it. `src/lib/content/drafts.test.ts` pins the semantics — note that only `development` reveals drafts, so preview and staging builds behave like production.
+
+Publishing is flipping one line to `draft: false`.
+
 Frontmatter is validated with Zod at build time. A missing `title` or a malformed `date` **fails `pnpm build`** rather than shipping broken metadata — verified, not assumed:
 
 ```

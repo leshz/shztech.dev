@@ -1,3 +1,4 @@
+import { notFound } from "next/navigation";
 import { ImageResponse } from "next/og";
 import { site } from "@/data/site";
 import { getAllPostSlugs, getPostBySlug } from "@/lib/content/posts";
@@ -25,9 +26,22 @@ export default async function BlogPostOpenGraphImage({
   const { slug } = await params;
   const post = getPostBySlug(slug);
 
-  const title = post?.title ?? "Post not found";
-  const readingTime = post ? `${post.readingTime} min read` : "";
-  const tags = post?.tags.slice(0, 3).join(" · ") ?? "";
+  /*
+   * 404 rather than rendering a placeholder image.
+   *
+   * `getPostBySlug` returns undefined for a draft in production, but falling
+   * back to a "Post not found" card still SERVED an image at
+   * /blog/<slug>/opengraph-image — so a draft's page 404'd while its social
+   * image stayed publicly fetchable, leaking the title of unpublished work to
+   * anyone who guessed the URL.
+   */
+  if (!post) {
+    notFound();
+  }
+
+  const title = post.title;
+  const readingTime = `${post.readingTime} min read`;
+  const tags = post.tags.slice(0, 3).join(" · ");
 
   return new ImageResponse(
     <div
