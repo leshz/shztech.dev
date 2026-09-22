@@ -25,89 +25,132 @@
    ========================================================================== */
 
 /*
- * ACCESSIBLE USAGE (preferred). Chrome exposes CSS-generated `content` to the
- * accessibility tree, so putting `data-text` directly on the heading made it
- * announce three times. Split the roles instead:
+ * ACCESSIBLE USAGE (preferred).
  *
- *   <h1>
- *     <span class={glitchLayers} data-text="Name" aria-hidden="true" />
+ *   <h1 class={glitchWrap} data-text="Name">
  *     <span class={glitchText}>Name</span>
  *   </h1>
  *
- * `.glitchText` is the one real, accessible text node; `.glitchLayers` is a
- * decorative overlay hidden from assistive tech.
+ * Why this shape. Chrome exposes CSS-generated `content` to the accessibility
+ * tree, so `data-text` on an element whose text is its own child made the
+ * heading announce three times. The fix is to keep the real text in a child
+ * span — `aria-hidden` on the pseudo-element host is not possible, but an
+ * element's generated content is only announced as part of ITS OWN text, and
+ * here the host's text lives in the child, so the name resolves once.
+ *
+ * An earlier attempt used a separate zero-size sibling span as the anchor.
+ * That failed twice over, both measured: the `width: 0; height: 0` box sat
+ * BELOW the text in the inline flow (67px off), and its absolutely-positioned
+ * pseudo-elements never animated at all — `getAnimations()` returned an empty
+ * array. The host must be the same box as the text for the copies to land on
+ * top of it.
  */
+
+.glitchWrap {
+  position: relative;
+  display: inline-block;
+  color: var(--color-text-strong);
+}
 
 .glitchText {
   position: relative;
-  display: inline-block;
-  color: var(--color-text-strong);
+  /* Above the occluding layers, so the legible text is never covered. */
+  z-index: 1;
 }
 
-/* Zero-size anchor: the two animated copies are its pseudo-elements. */
-.glitchLayers {
-  position: relative;
-  display: inline-block;
-  width: 0;
-  height: 0;
-}
-
-.glitchLayers::before,
-.glitchLayers::after {
+.glitchWrap::before,
+.glitchWrap::after {
   content: attr(data-text);
   position: absolute;
-  top: 0;
-  left: 0;
-  width: max-content;
-  background: var(--color-bg);
-  overflow: hidden;
-  pointer-events: none;
-  clip-path: inset(50% 0 50% 0);
-}
-
-.glitchLayers::before {
-  transform: translate3d(-2px, 0, 0);
-  text-shadow: 2px 0 var(--color-accent);
-  animation: glitch-alt 2s infinite linear alternate-reverse;
-}
-
-.glitchLayers::after {
-  transform: translate3d(2px, 0, 0);
-  text-shadow: -1px 0 var(--color-accent-alt);
-  animation: glitch 2s infinite linear alternate-reverse;
-}
-
-/*
- * LEGACY single-element form, kept for non-heading decorative text where a
- * duplicate accessible name does not matter. Prefer the split form above.
- */
-.glitch {
-  position: relative;
-  display: inline-block;
-  color: var(--color-text-strong);
-}
-
-.glitch::before,
-.glitch::after {
-  content: attr(data-text);
-  position: absolute;
-  top: 0;
-  left: 0;
+  inset-block-start: 0;
+  inset-inline-start: 0;
   width: 100%;
   background: var(--color-bg);
   overflow: hidden;
   pointer-events: none;
+  /* Base state is fully clipped; the keyframes open the bands. */
   clip-path: inset(50% 0 50% 0);
 }
 
-.glitch::before {
-  transform: translate3d(-2px, 0, 0);
-  text-shadow: 2px 0 var(--color-accent);
-  animation: glitch-alt 2s infinite linear alternate-reverse;
+/*
+ * The keyframes are defined HERE, inside the module, not in the global
+ * keyframes.css — and that is deliberate.
+ *
+ * CSS Modules scopes `@keyframes` names as well as class names. A module that
+ * writes `animation: glitch-alt ...` compiles to a reference to
+ * `glitch-module__hash__glitch-alt`, so pointing at a globally-defined
+ * `glitch-alt` silently resolves to nothing: the declaration looked right in
+ * source AND in computed styles, while `getAnimations()` returned an empty
+ * array and the layers stayed frozen at their fully-clipped base state.
+ *
+ * Wrapping the name as `animation: :global(glitch-alt)` is worse — that is not
+ * valid inside an `animation` shorthand, and the whole declaration is dropped.
+ *
+ * Defining them in the module keeps the name and its reference on the same
+ * side of the hashing boundary. It also puts the keyframes next to the only
+ * rules that use them.
+ */
+
+@keyframes glitch {
+  0% {
+    clip-path: inset(18% 0 62% 0);
+    transform: translate3d(-2px, 0, 0);
+  }
+  20% {
+    clip-path: inset(72% 0 13% 0);
+    transform: translate3d(2px, 0, 0);
+  }
+  40% {
+    clip-path: inset(8% 0 84% 0);
+    transform: translate3d(-3px, 0, 0);
+  }
+  60% {
+    clip-path: inset(46% 0 39% 0);
+    transform: translate3d(1px, 0, 0);
+  }
+  80% {
+    clip-path: inset(88% 0 4% 0);
+    transform: translate3d(-1px, 0, 0);
+  }
+  100% {
+    clip-path: inset(31% 0 55% 0);
+    transform: translate3d(2px, 0, 0);
+  }
 }
 
-.glitch::after {
-  transform: translate3d(2px, 0, 0);
+@keyframes glitchAlt {
+  0% {
+    clip-path: inset(66% 0 21% 0);
+    transform: translate3d(2px, 0, 0);
+  }
+  20% {
+    clip-path: inset(24% 0 68% 0);
+    transform: translate3d(-2px, 0, 0);
+  }
+  40% {
+    clip-path: inset(91% 0 2% 0);
+    transform: translate3d(3px, 0, 0);
+  }
+  60% {
+    clip-path: inset(5% 0 79% 0);
+    transform: translate3d(-1px, 0, 0);
+  }
+  80% {
+    clip-path: inset(52% 0 33% 0);
+    transform: translate3d(1px, 0, 0);
+  }
+  100% {
+    clip-path: inset(12% 0 74% 0);
+    transform: translate3d(-2px, 0, 0);
+  }
+}
+
+.glitchWrap::before {
+  text-shadow: 2px 0 var(--color-accent);
+  animation: glitchAlt 2s infinite linear alternate-reverse;
+}
+
+.glitchWrap::after {
   text-shadow: -1px 0 var(--color-accent-alt);
   animation: glitch 2s infinite linear alternate-reverse;
 }
@@ -115,10 +158,8 @@
 /* No infinitely-animating headline for motion-sensitive visitors: drop the
    layers entirely so only the plain, legible text remains. */
 @media (prefers-reduced-motion: reduce) {
-  .glitch::before,
-  .glitch::after,
-  .glitchLayers::before,
-  .glitchLayers::after {
+  .glitchWrap::before,
+  .glitchWrap::after {
     content: none;
     animation: none;
   }

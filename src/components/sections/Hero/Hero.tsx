@@ -13,18 +13,16 @@ export function Hero() {
     <section className={`${section.section} ${styles.hero}`}>
       <div className={`${section.content} ${styles.inner}`}>
         {/*
-          The glitch layers are ::before/::after with `content: attr(data-text)`.
-          Chrome exposes CSS-generated content to the accessibility tree, so the
-          heading was announced three times ("Jeffer Barragán" ×3). Carrying
-          data-text on an aria-hidden decorative span, with the real text in its
-          own span, keeps the effect and leaves one accessible name.
+          `data-text` sits on the heading itself — the ::before/::after glitch
+          layers read it via `content: attr(data-text)` and must share the
+          text's own box to land on top of it. The real text stays in a child
+          span, which is what keeps the accessible name to a single
+          "Jeffer Barragán" despite Chrome exposing generated content.
         */}
-        <h1 className={section.display}>
-          <span
-            className={glitch.glitchLayers}
-            data-text={site.name}
-            aria-hidden="true"
-          />
+        <h1
+          className={`${section.display} ${glitch.glitchWrap}`}
+          data-text={site.name}
+        >
           <span className={glitch.glitchText}>{site.name}</span>
         </h1>
         <p className={styles.role}>

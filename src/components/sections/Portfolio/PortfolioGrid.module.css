@@ -143,6 +143,22 @@
    its own opt-out below — required, not optional.
    ---------------------------------------------------------------------- */
 
+/*
+ * Defined locally: CSS Modules scopes `@keyframes` names, so pointing at the
+ * global `reveal` would compile to a hashed name that does not exist and the
+ * card entry animation would never run.
+ */
+@keyframes reveal {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 16px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
 .card {
   animation: reveal var(--transition-base) both;
   /* Small stagger so a filter change reads as a sequence, not a flash.

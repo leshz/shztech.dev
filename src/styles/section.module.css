@@ -123,6 +123,23 @@
 
 /* ---- Reveal ------------------------------------------------------------ */
 
+/*
+ * Defined in this module, not in the global keyframes.css. CSS Modules scopes
+ * `@keyframes` names alongside class names, so referencing a globally-defined
+ * `reveal` from here compiles to `section-module__hash__reveal` — a keyframe
+ * that does not exist, leaving the animation silently dead.
+ */
+@keyframes reveal {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 16px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
 .reveal {
   animation: reveal var(--transition-slow) both;
 }

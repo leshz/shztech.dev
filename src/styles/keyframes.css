@@ -1,86 +1,26 @@
 /* ==========================================================================
-   Global keyframes. Only what components actually use.
-   Authored with modern `clip-path` insets rather than the deprecated
-   `clip: rect()` property.
+   Global keyframes — intentionally empty.
+
+   Animations live in the CSS Module that uses them, NOT here.
+
+   Why: CSS Modules scopes `@keyframes` names the same way it scopes class
+   names. A module that writes
+
+     animation: reveal 0.6s both;
+
+   compiles that reference to `section-module__hash__reveal`. If `reveal` is
+   defined in this global file, the hashed name does not exist, so the browser
+   silently drops the animation — the declaration still reads correctly in the
+   source and in `getComputedStyle`, but `getAnimations()` returns nothing and
+   the element sits frozen at its base state.
+
+   That bug shipped here twice: the hero's glitch layers stayed stuck at
+   `clip-path: inset(50% 0 50% 0)` (fully clipped, invisible) and the portfolio
+   cards never played their entry animation. Wrapping the name as
+   `animation: :global(reveal)` does not help either — that is invalid inside
+   the `animation` shorthand and the whole declaration is discarded.
+
+   So: define `@keyframes` inside the module that references them, right next
+   to the rule that uses them. Add a plain global stylesheet here only for
+   keyframes consumed by non-module CSS (currently none).
    ========================================================================== */
-
-/* Upper-band slice jitter for the leading glitch layer. */
-@keyframes glitch {
-  0% {
-    clip-path: inset(18% 0 62% 0);
-    transform: translate3d(-2px, 0, 0);
-  }
-  20% {
-    clip-path: inset(72% 0 13% 0);
-    transform: translate3d(2px, 0, 0);
-  }
-  40% {
-    clip-path: inset(8% 0 84% 0);
-    transform: translate3d(-3px, 0, 0);
-  }
-  60% {
-    clip-path: inset(46% 0 39% 0);
-    transform: translate3d(1px, 0, 0);
-  }
-  80% {
-    clip-path: inset(88% 0 4% 0);
-    transform: translate3d(-1px, 0, 0);
-  }
-  100% {
-    clip-path: inset(31% 0 55% 0);
-    transform: translate3d(2px, 0, 0);
-  }
-}
-
-/* Counter-phase slice jitter for the trailing glitch layer. */
-@keyframes glitch-alt {
-  0% {
-    clip-path: inset(66% 0 21% 0);
-    transform: translate3d(2px, 0, 0);
-  }
-  20% {
-    clip-path: inset(24% 0 68% 0);
-    transform: translate3d(-2px, 0, 0);
-  }
-  40% {
-    clip-path: inset(91% 0 2% 0);
-    transform: translate3d(3px, 0, 0);
-  }
-  60% {
-    clip-path: inset(5% 0 79% 0);
-    transform: translate3d(-1px, 0, 0);
-  }
-  80% {
-    clip-path: inset(52% 0 33% 0);
-    transform: translate3d(1px, 0, 0);
-  }
-  100% {
-    clip-path: inset(12% 0 74% 0);
-    transform: translate3d(-2px, 0, 0);
-  }
-}
-
-/* Scroll affordance: a small downward nudge that settles back. */
-@keyframes scroll-hint {
-  0%,
-  100% {
-    transform: translate3d(0, 0, 0);
-    opacity: 1;
-  }
-  50% {
-    transform: translate3d(0, 8px, 0);
-    opacity: 0.6;
-  }
-}
-
-/* Entrance reveal for sections and list items. */
-@keyframes reveal {
-  from {
-    opacity: 0;
-    transform: translate3d(0, 16px, 0);
-  }
-  to {
-    opacity: 1;
-    transform: translate3d(0, 0, 0);
-  }
-}
