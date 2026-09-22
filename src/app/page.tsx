@@ -1,11 +1,7 @@
 import { About } from "@/components/sections/About/About";
 import { Hero } from "@/components/sections/Hero/Hero";
 import { site } from "@/data/site";
-import {
-  personJsonLd,
-  serializeJsonLd,
-  webSiteJsonLd,
-} from "@/lib/seo/jsonld";
+import { personJsonLd, serializeJsonLd, webSiteJsonLd } from "@/lib/seo/jsonld";
 
 /**
  * Home page.

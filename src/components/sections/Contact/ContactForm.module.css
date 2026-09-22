@@ -1,0 +1,83 @@
+/* ==========================================================================
+   ContactForm — stacked fields, mobile-first. No horizontal scroll at
+   320px: inputs are `width: 100%` inside a fluid parent.
+   ========================================================================== */
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  width: 100%;
+}
+
+/* Visually hidden but still in the DOM and tab order excluded — a
+   standard honeypot pattern. Not `display: none`, since some bots skip
+   fields that are display:none but still fill absolutely-positioned ones;
+   this stays simple and cheap rather than bot-proof. */
+.honeypot {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.label {
+  color: var(--color-text-strong);
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+}
+
+.input,
+.textarea {
+  width: 100%;
+  padding: var(--space-2) var(--space-3);
+  font-family: var(--font-sans);
+  font-size: var(--font-size-base);
+  color: var(--color-text);
+  background: var(--color-surface);
+  border: var(--form-border);
+  border-radius: var(--radius);
+  transition: border-color var(--transition-base);
+}
+
+.input:hover,
+.textarea:hover {
+  border: var(--form-border-hover);
+}
+
+.input:focus-visible,
+.textarea:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+.input[aria-invalid="true"],
+.textarea[aria-invalid="true"] {
+  border-color: var(--color-error);
+}
+
+.textarea {
+  resize: vertical;
+  min-height: 8rem;
+}
+
+.error {
+  color: var(--color-error);
+  font-size: var(--font-size-xs);
+  margin: 0;
+}
+
+.status {
+  min-height: 1.5em;
+  color: var(--color-text-muted);
+  font-size: var(--font-size-sm);
+  margin: 0;
+}

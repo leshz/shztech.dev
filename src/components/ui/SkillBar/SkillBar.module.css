@@ -1,0 +1,50 @@
+/* ==========================================================================
+   SkillBar — declarative meter. Fill width comes from the `--fill` custom
+   property set inline by the component, never from a DOM measurement.
+   ========================================================================== */
+
+.bar {
+  width: 100%;
+}
+
+.header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-2);
+  margin-bottom: var(--space-1);
+}
+
+.label {
+  color: var(--color-text);
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+}
+
+.value {
+  color: var(--color-text-muted);
+  font-size: var(--font-size-xs);
+}
+
+.track {
+  position: relative;
+  width: 100%;
+  height: var(--space-2);
+  background: var(--color-surface-raised);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.fill {
+  width: var(--fill);
+  height: 100%;
+  background: var(--color-accent);
+  border-radius: var(--radius);
+  transition: width var(--transition-slow);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fill {
+    transition: none;
+  }
+}

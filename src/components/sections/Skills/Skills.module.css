@@ -1,0 +1,35 @@
+/* ==========================================================================
+   Skills — group cards laid out on the shared section grid.
+   ========================================================================== */
+
+.groups {
+  align-items: start;
+}
+
+.group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.groupName {
+  color: var(--color-text-strong);
+  font-size: var(--font-size-h6);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: var(--letter-spacing-wide);
+  margin: 0;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.item {
+  width: 100%;
+}
