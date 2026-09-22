@@ -31,8 +31,20 @@ Node version is pinned in `.nvmrc` (24.17.0).
 | `pnpm dev` | Dev server |
 | `pnpm build` | Production build (also validates all MDX frontmatter) |
 | `pnpm start` | Serve the production build |
+| `pnpm test` | Vitest run |
 | `pnpm lint` | Biome check |
 | `pnpm format` | Biome format --write |
+
+### Environment
+
+Copy `.env.example` to `.env.local`. Both variables are only needed by the
+contact form; without them the form still validates input and returns a
+"not configured yet" message rather than failing.
+
+| Variable | Purpose |
+|---|---|
+| `RESEND_API_KEY` | Sends contact-form mail via [Resend](https://resend.com/api-keys) |
+| `CONTACT_FROM_EMAIL` | Verified sender address on a Resend-verified domain |
 
 ## Architecture
 
@@ -79,7 +91,33 @@ draft: false
 Content here. Supports MDX, so React components work inline.
 ```
 
-Frontmatter is validated with Zod at build time. A missing `title` or a malformed `date` **fails `pnpm build`** rather than shipping broken metadata.
+Frontmatter is validated with Zod at build time. A missing `title` or a malformed `date` **fails `pnpm build`** rather than shipping broken metadata — verified, not assumed:
+
+```
+$ pnpm build
+Validation failed on src/content/blog/probe/index.mdx:
+- date: Invalid ISO date
+```
+
+`src/lib/content/schema.test.ts` keeps that guarantee under test so a refactor cannot quietly remove it.
+
+## Verified state
+
+Measured against the production build (`pnpm build && pnpm start`), not dev mode:
+
+| Check | Result |
+|---|---|
+| Lighthouse (mobile) | **100** accessibility · **100** best practices · **100** SEO · **100** agentic browsing, on `/`, `/resume`, `/portfolio`, `/blog/[slug]`, `/contact` |
+| Console | Zero messages — no hydration errors |
+| Layout | No horizontal overflow at a true 320px viewport |
+| Tests | 15 passing |
+| Types / lint | `tsc --noEmit` and `biome check` clean |
+
+Accessibility notes worth keeping in mind when editing:
+
+- **Never put a literal colour in a component.** `src/styles/tokens.css` holds every value. Use `--color-accent-text` for text on a page surface and `--color-accent` for fills and borders — the raw accent measures only 3.03:1 on white and fails WCAG AA as text.
+- **`--color-on-accent` is the ink for text on an accent fill**, and is deliberately the same in both themes because the accent surfaces are.
+- **A component that adds its own animation must add its own `prefers-reduced-motion` opt-out.** Biome forbids `!important`, so the global clamp in `reset.css` cannot override component animations.
 
 ## Attribution
 
