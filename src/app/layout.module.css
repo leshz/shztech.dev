@@ -1,0 +1,20 @@
+/* Skip-to-content link: visually hidden until it receives keyboard focus. */
+.skipLink {
+  position: absolute;
+  top: var(--space-2);
+  left: var(--space-2);
+  z-index: var(--z-header);
+  transform: translateY(-200%);
+  padding: var(--space-2) var(--space-4);
+  background: var(--color-bg);
+  color: var(--color-text-strong);
+  border: 1px solid var(--color-accent);
+  border-radius: var(--radius);
+  font-size: var(--font-size-sm);
+  text-decoration: none;
+  transition: transform var(--transition-base);
+}
+
+.skipLink:focus {
+  transform: translateY(0);
+}

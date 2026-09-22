@@ -1,5 +1,9 @@
 import type { Metadata } from "next";
 import { Roboto_Mono } from "next/font/google";
+import { Footer } from "@/components/layout/Footer/Footer";
+import { Header } from "@/components/layout/Header/Header";
+import { ThemeProvider } from "@/components/layout/ThemeProvider/ThemeProvider";
+import styles from "./layout.module.css";
 import "./globals.css";
 
 const robotoMono = Roboto_Mono({
@@ -19,7 +23,16 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="en" className={robotoMono.variable} suppressHydrationWarning>
-      <body>{children}</body>
+      <body>
+        <a href="#main" className={styles.skipLink}>
+          Skip to content
+        </a>
+        <ThemeProvider>
+          <Header />
+          <main id="main">{children}</main>
+          <Footer />
+        </ThemeProvider>
+      </body>
     </html>
   );
 }

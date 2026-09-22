@@ -1,0 +1,71 @@
+/* ==========================================================================
+   Hero — full-viewport-ish landing section.
+
+   Uses `100svh` (small viewport height) rather than `100vh` so mobile
+   browser chrome (address bar, toolbars) never clips the content. The
+   `--space-8` subtraction gives the sticky header some breathing room
+   without hardcoding a pixel literal.
+   ========================================================================== */
+
+.hero {
+  display: flex;
+  align-items: center;
+  min-height: calc(100svh - var(--space-8));
+  padding-block: var(--space-8);
+}
+
+.inner {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-4);
+  max-width: 48rem;
+}
+
+.role {
+  color: var(--color-text);
+  font-size: var(--font-size-lg);
+  letter-spacing: var(--letter-spacing-wide);
+}
+
+.focus {
+  color: var(--color-accent);
+}
+
+.availability {
+  color: var(--color-text-muted);
+  font-size: var(--font-size-base);
+  letter-spacing: var(--letter-spacing-wide);
+}
+
+.ctas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  margin-top: var(--space-2);
+}
+
+/* ---- Scroll hint --------------------------------------------------------
+   Decorative bottom affordance. Absolutely positioned against the section,
+   which is why `.hero` needs `position: relative`.
+   ---------------------------------------------------------------------- */
+
+.hero {
+  position: relative;
+}
+
+.scrollHint {
+  position: absolute;
+  bottom: var(--space-6);
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  color: var(--color-text-muted);
+  animation: scroll-hint 2s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scrollHint {
+    animation: none;
+  }
+}

@@ -35,8 +35,16 @@
   --color-accent-alt: #ede574;
   --color-error: #e02b2b;
 
-  /* Absolute white. Stays white in both themes on purpose: it is the ink
-     colour used on top of a filled accent surface, not a theme surface. */
+  /* Ink for text sitting ON an accent surface. Deliberately NOT redefined in
+     the dark block: the accent surfaces are identical in both themes, so the
+     ink on them must be too. Measured WCAG AA against both accents:
+       #141414 on --color-accent     (#f26b38) = 6.08:1  ✓
+       #141414 on --color-accent-alt (#ede574) = 14.09:1 ✓
+     White would be 3.03:1 and 1.31:1 respectively — both failures. */
+  --color-on-accent: #141414;
+
+  /* Absolute white, for the rare place a true white is meant regardless of
+     theme. NOT the right choice on an accent surface — use --color-on-accent. */
   --color-white: #ffffff;
 
   /* ---- Typography ------------------------------------------------------- */

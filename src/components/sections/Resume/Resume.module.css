@@ -1,0 +1,75 @@
+/* ==========================================================================
+   Resume — vertical timeline. Left border + dot marker, reproduced with
+   tokens instead of the template's hardcoded values.
+   ========================================================================== */
+
+.timeline {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-inline-start: 1px solid var(--color-border);
+}
+
+.item {
+  position: relative;
+  padding-inline-start: var(--space-5);
+  padding-block-end: var(--space-6);
+}
+
+.item:last-child {
+  padding-block-end: 0;
+}
+
+.item::before {
+  content: "";
+  position: absolute;
+  top: 0.4em;
+  left: -0.3125rem;
+  width: 0.625rem;
+  height: 0.625rem;
+  border-radius: 50%;
+  background: var(--color-accent);
+}
+
+.itemCurrent::before {
+  background: var(--color-accent-alt);
+}
+
+.header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-2);
+  margin-bottom: var(--space-1);
+}
+
+.role {
+  color: var(--color-text-strong);
+  font-size: var(--font-size-h5);
+  font-weight: 500;
+  margin: 0;
+}
+
+.company {
+  color: var(--color-accent);
+  font-size: var(--font-size-base);
+}
+
+.period {
+  color: var(--color-text-muted);
+  font-size: var(--font-size-xs);
+  letter-spacing: var(--letter-spacing-wide);
+  text-transform: uppercase;
+}
+
+.summary {
+  color: var(--color-text);
+  font-size: var(--font-size-base);
+  line-height: var(--line-height-base);
+  margin: 0;
+}
+
+.empty {
+  color: var(--color-text-muted);
+  font-size: var(--font-size-base);
+}

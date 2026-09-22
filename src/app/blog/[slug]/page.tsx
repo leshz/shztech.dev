@@ -57,9 +57,9 @@ export default async function BlogPostPage({ params }: PageProps) {
 
   return (
     <article className={sectionStyles.section}>
-      {/* biome-ignore lint/security/noDangerouslySetInnerHtml: JSON-LD from our own typed data, escaped in serializeJsonLd */}
       <script
         type="application/ld+json"
+        // biome-ignore lint/security/noDangerouslySetInnerHtml: JSON-LD built from our own typed content, with `<` escaped in serializeJsonLd. There is no other way to emit a ld+json script body in React.
         dangerouslySetInnerHTML={{
           __html: serializeJsonLd(blogPostingJsonLd(post)),
         }}

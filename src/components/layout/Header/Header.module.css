@@ -1,0 +1,164 @@
+.header {
+  position: sticky;
+  top: 0;
+  z-index: var(--z-header);
+  background: var(--color-bg);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  max-width: var(--content-max-width);
+  margin-inline: auto;
+  padding-block: var(--space-3);
+  padding-inline: var(--gutter);
+}
+
+@media (min-width: 48rem) {
+  .inner {
+    padding-inline: var(--space-6);
+  }
+}
+
+@media (min-width: 64rem) {
+  .inner {
+    padding-inline: var(--space-8);
+  }
+}
+
+.brand {
+  font-size: var(--font-size-base);
+  font-weight: 700;
+  letter-spacing: var(--letter-spacing-wide);
+  text-transform: uppercase;
+  color: var(--color-text-strong);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.brand:hover {
+  color: var(--color-accent);
+}
+
+/* ---- Desktop nav --------------------------------------------------------- */
+
+.nav {
+  display: none;
+}
+
+@media (min-width: 48rem) {
+  .nav {
+    display: block;
+  }
+}
+
+.navList {
+  display: flex;
+  align-items: center;
+  gap: var(--space-5);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.navLink {
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  letter-spacing: var(--letter-spacing-wide);
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--color-text);
+  transition: color var(--transition-base);
+}
+
+.navLink:hover {
+  color: var(--color-accent);
+}
+
+.navLink[aria-current="page"] {
+  color: var(--color-accent);
+}
+
+/* ---- Actions -------------------------------------------------------------- */
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.menuTrigger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  background: transparent;
+  color: var(--color-text);
+  cursor: pointer;
+  transition: var(--transition-base);
+}
+
+.menuTrigger:hover {
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+}
+
+.menuTrigger:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+@media (min-width: 48rem) {
+  .menuTrigger {
+    display: none;
+  }
+}
+
+/* ---- Mobile panel ----------------------------------------------------------
+   Below ~768px only; the desktop nav above takes over past that breakpoint.
+   ---------------------------------------------------------------------- */
+
+.mobilePanel {
+  border-top: 1px solid var(--color-border);
+  background: var(--color-bg);
+}
+
+@media (min-width: 48rem) {
+  .mobilePanel {
+    display: none;
+  }
+}
+
+.mobileList {
+  display: flex;
+  flex-direction: column;
+  list-style: none;
+  margin: 0;
+  padding: var(--space-3) var(--gutter) var(--space-4);
+}
+
+.mobileLink {
+  display: block;
+  padding-block: var(--space-2);
+  font-size: var(--font-size-base);
+  font-weight: 500;
+  letter-spacing: var(--letter-spacing-wide);
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--color-text);
+  transition: color var(--transition-base);
+}
+
+.mobileLink:hover {
+  color: var(--color-accent);
+}
+
+.mobileLink[aria-current="page"] {
+  color: var(--color-accent);
+}

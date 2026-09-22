@@ -49,16 +49,22 @@
   color: var(--color-text);
 }
 
+/*
+ * Filled buttons use --color-on-accent (dark ink), never white.
+ * White measured 3.03:1 on --color-accent and 1.31:1 on --color-accent-alt,
+ * both WCAG AA failures. --color-on-accent is theme-invariant by design,
+ * because the accent surfaces are the same in light and dark.
+ */
 .fill {
   background: var(--color-accent);
   border-color: var(--color-accent);
-  color: var(--color-white);
+  color: var(--color-on-accent);
 }
 
 .fill:hover {
   background: var(--color-accent-alt);
   border-color: var(--color-accent-alt);
-  color: var(--color-white);
+  color: var(--color-on-accent);
 }
 
 .icon {
