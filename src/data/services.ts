@@ -23,9 +23,21 @@ export const services = [
   },
   {
     icon: "layers",
+    title: "Design Systems & Monorepos",
+    description:
+      "Shared component and utility libraries in Turborepo or Lerna monorepos — the kind adopted across microservices by large engineering orgs, cutting duplication and bundle size.",
+  },
+  {
+    icon: "database",
     title: "Headless Commerce & CMS Integration",
     description:
-      "Strapi-based headless CMS setups and e-commerce integrations, connecting content and product data to fast, SEO-friendly storefronts.",
+      "Strapi-based headless CMS setups with custom plugin development, connecting content and product data to fast, SEO-friendly Next.js storefronts.",
+  },
+  {
+    icon: "search",
+    title: "Technical SEO & Core Web Vitals",
+    description:
+      "Indexation, on-page structure, metadata and Core Web Vitals work for e-commerce and content sites, aimed at measurable gains in qualified traffic.",
   },
   {
     icon: "credit-card",

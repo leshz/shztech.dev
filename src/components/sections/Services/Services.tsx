@@ -18,7 +18,9 @@ const serviceIconMap: Record<string, IconName> = {
   code: "code",
   layout: "layers",
   layers: "layers",
-  "credit-card": "check",
+  database: "database",
+  search: "search",
+  "credit-card": "tag",
   cloud: "cloud",
   sparkles: "sparkles",
 };

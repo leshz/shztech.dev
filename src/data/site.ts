@@ -31,7 +31,7 @@ export const site = {
   url: "https://shztech.dev",
   location: "Medellín, Colombia",
   availability: "Open to 100% remote roles — US · Europe · Canada",
-  bio: "Senior full-stack engineer and tech lead with 8+ years building digital products used by millions of people. Currently leading frontend development for a suite of crypto applications at Mercado Pago, covering P2P buy, sell, and hold across multiple digital assets. Previously shipped products at regional scale across 18+ countries at Mercado Libre and led the MVP for an agri-finance platform at NERA (Banco Galicia) now processing over USD 1.2B in operations.",
+  bio: "Senior full-stack engineer and tech lead with 8+ years building high-scale web products alongside world-class engineering teams. I set clear, measurable goals, grow the engineers around me, and ship technical work that moves the business — combining engineering depth with a designer's eye for UI decisions that actually work for users. Currently leading frontend for a suite of crypto applications at Mercado Pago, Mercado Libre's fintech arm.",
   socials: [
     {
       platform: "github",

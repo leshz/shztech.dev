@@ -20,8 +20,8 @@ export function Skills() {
 
         <div className={`${section.grid} ${section.grid3} ${styles.groups}`}>
           {skillGroups.map((group) => (
-            <div key={group.group} className={styles.group}>
-              <h3 className={styles.groupName}>{group.group}</h3>
+            <div key={group.name} className={styles.group}>
+              <h3 className={styles.groupName}>{group.name}</h3>
               <ul className={styles.list}>
                 {group.skills.map((skill) => (
                   <li key={skill.name} className={styles.item}>

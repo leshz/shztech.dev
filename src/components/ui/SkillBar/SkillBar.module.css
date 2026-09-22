@@ -16,12 +16,15 @@
 }
 
 .label {
+  min-width: 0;
   color: var(--color-text);
   font-size: var(--font-size-sm);
   font-weight: 500;
+  overflow-wrap: anywhere;
 }
 
 .value {
+  flex-shrink: 0;
   color: var(--color-text-muted);
   font-size: var(--font-size-xs);
 }

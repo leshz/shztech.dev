@@ -13,7 +13,7 @@
 .item {
   position: relative;
   padding-inline-start: var(--space-5);
-  padding-block-end: var(--space-6);
+  padding-block-end: var(--space-7);
 }
 
 .item:last-child {
@@ -55,18 +55,75 @@
   font-size: var(--font-size-base);
 }
 
-.period {
+.currentBadge {
+  padding: 0 var(--space-2);
+  background: var(--color-accent-alt);
+  /* Dark ink on an accent surface — white fails contrast here. */
+  color: var(--color-on-accent);
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  letter-spacing: var(--letter-spacing-wide);
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-2);
+  margin-bottom: var(--space-3);
   color: var(--color-text-muted);
   font-size: var(--font-size-xs);
   letter-spacing: var(--letter-spacing-wide);
   text-transform: uppercase;
 }
 
-.summary {
+.metaDivider {
+  color: var(--color-border);
+}
+
+.context {
+  max-width: 68ch;
+  margin: 0 0 var(--space-4);
+  color: var(--color-text-muted);
+  font-size: var(--font-size-base);
+  line-height: var(--line-height-base);
+}
+
+.highlights {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  max-width: 68ch;
+  margin: 0 0 var(--space-4);
+  padding-inline-start: var(--space-5);
   color: var(--color-text);
   font-size: var(--font-size-base);
   line-height: var(--line-height-base);
+}
+
+.highlights li {
+  padding-inline-start: var(--space-1);
+}
+
+.stack {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
   margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.tag {
+  padding: 0 var(--space-2);
+  border: 1px solid var(--color-border);
+  color: var(--color-text-muted);
+  font-size: var(--font-size-xs);
+  letter-spacing: var(--letter-spacing-wide);
+  text-transform: uppercase;
+  white-space: nowrap;
 }
 
 /* Heading for a secondary group inside the section (e.g. Education). */
@@ -77,4 +134,75 @@
   font-size: var(--font-size-h5);
   text-transform: uppercase;
   letter-spacing: var(--letter-spacing-wide);
+}
+
+/* ---- Earlier experience -------------------------------------------------- */
+
+.earlier {
+  max-width: 68ch;
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: var(--font-size-base);
+  line-height: var(--line-height-base);
+}
+
+/* ---- Education / languages block (not a timeline, plain stacked list) --- */
+
+.blockList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.blockItem {
+  max-width: 68ch;
+}
+
+.blockTitle {
+  color: var(--color-text-strong);
+  font-size: var(--font-size-base);
+  font-weight: 500;
+  margin: 0;
+}
+
+.blockMeta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-2);
+  margin-top: var(--space-1);
+  color: var(--color-text-muted);
+  font-size: var(--font-size-xs);
+  letter-spacing: var(--letter-spacing-wide);
+  text-transform: uppercase;
+}
+
+.blockDetail {
+  margin: var(--space-2) 0 0;
+  color: var(--color-text-muted);
+  font-size: var(--font-size-base);
+  line-height: var(--line-height-base);
+}
+
+/* ---- Languages ----------------------------------------------------------- */
+
+.languageList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-5);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.languageItem {
+  color: var(--color-text);
+  font-size: var(--font-size-base);
+}
+
+.languageLevel {
+  color: var(--color-text-muted);
 }

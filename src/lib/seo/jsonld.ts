@@ -1,4 +1,4 @@
-import { experience } from "@/data/resume";
+import { education, experience, languages } from "@/data/resume";
 import { site } from "@/data/site";
 import type { Post } from "@/lib/content/posts";
 
@@ -46,14 +46,32 @@ export function personJsonLd() {
           },
         }
       : {}),
+    // Degree-granting institutions only. Platzi is continuous learning, not
+    // an alumniOf claim, so it is deliberately excluded here.
+    alumniOf: education
+      .filter((item) => item.degree.startsWith("B.S."))
+      .map((item) => ({
+        "@type": "CollegeOrUniversity",
+        name: item.institution,
+      })),
+    knowsLanguage: languages.map((item) => ({
+      "@type": "Language",
+      name: item.language,
+    })),
     knowsAbout: [
       "TypeScript",
       "React",
       "Next.js",
       "Node.js",
       "Frontend Architecture",
+      "Design Systems",
+      "Micro-frontends",
+      "Monorepos",
+      "Technical SEO",
+      "Headless CMS",
       "Fintech",
       "Crypto",
+      "Technical Leadership",
     ],
   };
 }

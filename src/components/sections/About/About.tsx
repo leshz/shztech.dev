@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { yearsOfExperience } from "@/data/resume";
+import { languages, yearsOfExperience } from "@/data/resume";
 import { site } from "@/data/site";
 import section from "@/styles/section.module.css";
 import styles from "./About.module.css";
@@ -49,6 +49,15 @@ export function About() {
               <div>
                 <dt className={styles.infoTerm}>Experience</dt>
                 <dd className={styles.infoValue}>{yearsOfExperience}+ years</dd>
+              </div>
+              {/* Relevant to the remote roles above, so it belongs here. */}
+              <div>
+                <dt className={styles.infoTerm}>Languages</dt>
+                <dd className={styles.infoValue}>
+                  {languages
+                    .map((item) => `${item.language} — ${item.shortLevel}`)
+                    .join(" · ")}
+                </dd>
               </div>
             </dl>
           </div>
