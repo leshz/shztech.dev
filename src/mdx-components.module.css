@@ -1,0 +1,120 @@
+/* Styles for rendered MDX post bodies. Tokens only — no literal colours. */
+
+.heading {
+  position: relative;
+  margin-top: var(--space-7);
+  margin-bottom: var(--space-3);
+  color: var(--color-text-strong);
+  letter-spacing: var(--letter-spacing-default);
+  scroll-margin-top: var(--space-8);
+}
+
+/* Anchor link sits in the left gutter on wide screens, hidden until hover. */
+.anchor {
+  position: absolute;
+  left: calc(var(--space-5) * -1);
+  color: var(--color-text-muted);
+  text-decoration: none;
+  opacity: 0;
+  transition: opacity var(--transition-base);
+}
+
+.heading:hover .anchor,
+.anchor:focus-visible {
+  opacity: 1;
+}
+
+@media (max-width: 900px) {
+  /* No gutter to spare — keep the id for deep links, drop the visual anchor. */
+  .anchor {
+    display: none;
+  }
+}
+
+.link {
+  color: var(--color-accent);
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+  transition: opacity var(--transition-base);
+}
+
+.link:hover {
+  opacity: 0.75;
+}
+
+.externalIcon {
+  display: inline-block;
+  margin-left: 0.25em;
+  vertical-align: baseline;
+}
+
+.figure {
+  display: block;
+  margin: var(--space-6) 0;
+}
+
+.image {
+  width: 100%;
+  height: auto;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+}
+
+.pre {
+  margin: var(--space-5) 0;
+  padding: var(--space-4);
+  overflow-x: auto;
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height-base);
+  background: var(--color-surface-raised);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+}
+
+.pre code {
+  background: none;
+  border: 0;
+  padding: 0;
+  font-size: inherit;
+}
+
+.blockquote {
+  margin: var(--space-5) 0;
+  padding: var(--space-2) var(--space-4);
+  color: var(--color-text-muted);
+  border-left: 2px solid var(--color-accent);
+}
+
+.blockquote > :last-child {
+  margin-bottom: 0;
+}
+
+.tableWrap {
+  margin: var(--space-5) 0;
+  overflow-x: auto;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--font-size-sm);
+}
+
+.table th,
+.table td {
+  padding: var(--space-2) var(--space-3);
+  text-align: left;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.table th {
+  color: var(--color-text-strong);
+  text-transform: uppercase;
+  letter-spacing: var(--letter-spacing-wide);
+}
+
+.hr {
+  margin: var(--space-7) 0;
+  border: 0;
+  border-top: 1px solid var(--color-border);
+}

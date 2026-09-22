@@ -1,0 +1,79 @@
+/* ==========================================================================
+   Glitch text effect.
+
+   Usage: the element MUST carry a `data-text` attribute whose value is the
+   same string as its visible text — the pseudo-element layers read it via
+   `content: attr(data-text)`.
+
+     <h1 className={g.glitch} data-text="Jeffer Barragán">Jeffer Barragán</h1>
+
+   How it works: two absolutely-positioned copies sit exactly on top of the
+   real text, each painted over the page background so it fully occludes the
+   original. Each copy is clipped to a thin horizontal band that jumps to a
+   new band on every keyframe step and is nudged a couple of pixels
+   sideways, with an offset accent text-shadow. The two layers run
+   counter-phase, so at any instant a band or two look torn and
+   colour-fringed while the rest of the glyphs read normally.
+
+   The clip bands are PERCENTAGE `clip-path: inset()` values, not pixel
+   `clip: rect()` — so the effect is font-size and resolution independent
+   and stays enabled at every viewport width, including phones.
+
+   Theme-safe: the occluding background is `--color-bg`, so the effect
+   inverts automatically with the theme. Fully disabled under
+   `prefers-reduced-motion: reduce`.
+   ========================================================================== */
+
+.glitch {
+  position: relative;
+  display: inline-block;
+  color: var(--color-text-strong);
+}
+
+.glitch::before,
+.glitch::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background: var(--color-bg);
+  overflow: hidden;
+  pointer-events: none;
+  clip-path: inset(50% 0 50% 0);
+}
+
+.glitch::before {
+  transform: translate3d(-2px, 0, 0);
+  text-shadow: 2px 0 var(--color-accent);
+  animation: glitch-alt 2s infinite linear alternate-reverse;
+}
+
+.glitch::after {
+  transform: translate3d(2px, 0, 0);
+  text-shadow: -1px 0 var(--color-accent-alt);
+  animation: glitch 2s infinite linear alternate-reverse;
+}
+
+/* Accent-toned variant, for a glitching accent-coloured headline. */
+.glitchAccent {
+  color: var(--color-accent);
+}
+
+.glitchAccent::before {
+  text-shadow: 2px 0 var(--color-text-strong);
+}
+
+.glitchAccent::after {
+  text-shadow: -1px 0 var(--color-accent-alt);
+}
+
+/* No infinitely-animating headline for motion-sensitive visitors: drop the
+   layers entirely so only the plain, legible text remains. */
+@media (prefers-reduced-motion: reduce) {
+  .glitch::before,
+  .glitch::after {
+    content: none;
+    animation: none;
+  }
+}

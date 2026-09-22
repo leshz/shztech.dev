@@ -1,0 +1,128 @@
+---
+title: "Theming without duplicate stylesheets"
+description: "A portfolio template shipped seven colour schemes as seven near-identical CSS files. Design tokens replace all of them with one line."
+date: 2026-09-22
+tags: ["css", "architecture", "maintainability"]
+draft: false
+---
+
+I rebuilt this site from a commercial template. The design was good. The CSS
+architecture was a trap, and it is a trap worth describing, because the same
+pattern shows up in production codebases that have never seen a template.
+
+## The symptom
+
+The template supported seven accent colours. It implemented them as seven
+stylesheets:
+
+```
+public/css/template-colors/
+├── orange.css    203 lines
+├── blue.css      203 lines
+├── green.css     203 lines
+├── pink.css      203 lines
+├── purple.css    203 lines
+├── red.css       203 lines
+└── ...
+```
+
+Each file re-declared the same selectors with a different hex value:
+
+```css
+/* orange.css */
+.container .line { background: #f26b38; }
+a:hover          { color: #f26b38; }
+.btn.fill        { background: #f26b38; border-color: #f26b38; }
+/* …200 more lines */
+```
+
+Dark mode was an eighth file, and it was applied by serving *entirely separate
+routes* — `/index-dark`, `/blog-dark`, `/portfolio-dark` — each importing one
+more stylesheet on top of the cascade.
+
+## Why this is worse than it looks
+
+Count the cost of changing the accent colour from orange to teal. It is not one
+edit. It is 203 edits in one file, and you have to be sure you found every
+selector, because nothing tells you when you miss one. The failure mode is a
+single stubborn orange button discovered three weeks later.
+
+Now count the cost of adding a *new* component. You write its styles once for
+light mode, then open `dark.css` and write them again, then open seven colour
+files and write the accent-dependent parts seven more times. The work to add one
+component scales with the number of themes. That is backwards: themes should be
+free.
+
+The deeper problem is that **the colour is spelled out at every call site**.
+Every selector that mentions `#f26b38` is an independent copy of the decision
+"our accent is orange." Duplicated decisions drift.
+
+## The fix
+
+One indirection. Components stop naming colours and name *roles* instead:
+
+```css
+/* tokens.css — the only file that contains a hex value */
+:root {
+  --color-bg: #ffffff;
+  --color-text: #363636;
+  --color-border: #dddddd;
+  --color-accent: #f26b38;
+}
+
+[data-theme="dark"] {
+  --color-bg: #26262d;
+  --color-text: #f0f0f0;
+  --color-border: #666666;
+  /* accent is unchanged — it reads well on both */
+}
+```
+
+```css
+/* Button.module.css — no hex, ever */
+.fill {
+  background: var(--color-accent);
+  color: var(--color-white);
+}
+```
+
+Changing the accent is now one line. Dark mode is a `data-theme` attribute on
+`<html>` and **zero component CSS** — every component that consumes
+`var(--color-*)` switches for free, including components written months later by
+someone who never thought about theming.
+
+## The part that made it safe
+
+I did not assume the token swap would work. Before committing to it I checked
+what the template's dark stylesheet actually contained:
+
+```bash
+grep -oE '^\s*(color|background|border-color|box-shadow|filter)\s*:[^;]+;' \
+  public/css/template-dark/dark.css | sort | uniq -c | sort -rn
+```
+
+Every one of its ~270 lines set a colour, a background, a border colour, a
+box-shadow colour, or a single `filter: invert()`. **No layout, no spacing, no
+sizing.** That result is what made the reduction provably safe rather than
+hopeful — if the file had contained so much as one `margin`, dark mode would not
+have been purely a palette change, and I would have needed a different plan.
+
+Worth internalising: the audit took thirty seconds and converted an assumption
+into a fact. Do it before the refactor, not after.
+
+## What this buys beyond tidiness
+
+- **Deleting code.** Seven colour files, a dark stylesheet, and an RTL
+  stylesheet all stopped existing. So did the duplicated route tree they
+  required.
+- **A real contract.** "No component may contain a literal hex" is a rule a
+  reviewer can enforce by reading a diff, and a linter can enforce without
+  reading anything.
+- **Cheap experiments.** Trying a different accent is now a one-line edit in dev
+  tools, so it actually gets tried.
+
+The template's approach was not lazy — it was written before custom properties
+had support, and shipping N stylesheets was the honest solution then. The lesson
+is not that the original authors were wrong. It is that a workaround for a
+missing platform feature should be deleted once the platform ships the feature,
+and that deletion rarely happens on its own.

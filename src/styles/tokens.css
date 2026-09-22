@@ -1,0 +1,121 @@
+/* ==========================================================================
+   Design tokens — single source of truth for theming.
+
+   Two guarantees this file makes to every component in the project:
+
+   1. Re-theming the accent is a ONE-LINE change: edit `--color-accent` in
+      `:root` (and, if the dark palette should diverge, its `[data-theme]`
+      counterpart). No component CSS mentions a brand colour.
+
+   2. Dark mode requires ZERO component CSS. The `[data-theme="dark"]` block
+      below redefines colour tokens only — never a size, spacing, font or
+      layout value. Components consume `var(--color-*)` and switch for free.
+
+   Rule for every other stylesheet in `src/`: no literal hex, rgb or font
+   size. Only structural literals (`0`, `1px` hairlines, `100%`, `50%`) are
+   allowed outside this file.
+   ========================================================================== */
+
+:root {
+  color-scheme: light;
+
+  /* ---- Colours: surfaces ------------------------------------------------ */
+  --color-bg: #ffffff;
+  --color-surface: #fafafa;
+  --color-surface-raised: #f0f0f0;
+
+  /* ---- Colours: content ------------------------------------------------- */
+  --color-text: #363636;
+  --color-text-strong: #141414;
+  --color-text-muted: #999999;
+  --color-border: #dddddd;
+
+  /* ---- Colours: brand + state ------------------------------------------- */
+  --color-accent: #f26b38;
+  --color-accent-alt: #ede574;
+  --color-error: #e02b2b;
+
+  /* Absolute white. Stays white in both themes on purpose: it is the ink
+     colour used on top of a filled accent surface, not a theme surface. */
+  --color-white: #ffffff;
+
+  /* ---- Typography ------------------------------------------------------- */
+  /* `--font-roboto-mono` is injected by next/font in src/app/layout.tsx. */
+  --font-sans:
+    var(--font-roboto-mono), ui-monospace, "SFMono-Regular", monospace;
+
+  --font-size-xs: 0.6875rem; /* 11px */
+  --font-size-sm: 0.75rem; /*    12px */
+  --font-size-base: 0.8125rem; /* 13px */
+  --font-size-lg: 0.9375rem; /*  15px */
+
+  /* Fluid display size. The reference design hardcodes 68px, which overflows
+     below ~420px; this floors at 34px and reaches 68px around 1100px wide. */
+  --font-size-title: clamp(2.125rem, 1.25rem + 6vw, 4.25rem);
+  --font-size-subtitle: 0.9375rem; /* 15px */
+
+  --font-size-h1: 1.625rem; /* 26px */
+  --font-size-h2: 1.4375rem; /* 23px */
+  --font-size-h3: 1.25rem; /*  20px */
+  --font-size-h4: 1.125rem; /* 18px */
+  --font-size-h5: 1rem; /*     16px */
+  --font-size-h6: 0.875rem; /* 14px */
+
+  /* ---- Metrics ---------------------------------------------------------- */
+  --line-height-base: 1.7692; /* 23px over a 13px base */
+  --line-height-tight: 1.2;
+  --letter-spacing-default: 0;
+  --letter-spacing-wide: 0.04em;
+
+  /* ---- Spacing scale --------------------------------------------------- */
+  --space-1: 0.25rem; /*  4px */
+  --space-2: 0.5rem; /*   8px */
+  --space-3: 0.75rem; /* 12px */
+  --space-4: 1rem; /*     16px */
+  --space-5: 1.5rem; /*   24px */
+  --space-6: 2rem; /*     32px */
+  --space-7: 3rem; /*     48px */
+  --space-8: 5rem; /*     80px */
+
+  /* ---- Composed --------------------------------------------------------- */
+  --form-border: 1px solid var(--color-border);
+  --form-border-hover: 1px solid var(--color-accent);
+
+  /* ---- Primitives ------------------------------------------------------- */
+  --radius: 0;
+  --transition-base: 0.3s ease;
+  --transition-slow: 0.6s ease;
+
+  /* ---- Layout ----------------------------------------------------------- */
+  --content-max-width: 75rem; /* 1200px */
+  --gutter: var(--space-4); /* 16px floor, never less */
+
+  /* ---- Stacking --------------------------------------------------------- */
+  --z-header: 100;
+  --z-preloader: 1000;
+}
+
+/* ==========================================================================
+   Dark theme — colour tokens ONLY.
+
+   Adding a size, spacing or layout declaration here is a bug: it would break
+   the "dark mode is a token swap" contract that lets components stay
+   theme-agnostic.
+   ========================================================================== */
+
+[data-theme="dark"] {
+  color-scheme: dark;
+
+  --color-bg: #26262d;
+  --color-surface: #31313a;
+  --color-surface-raised: #3e3f48;
+
+  --color-text: #f0f0f0;
+  --color-text-strong: #ffffff;
+  --color-text-muted: #a2a2a6;
+  --color-border: #666666;
+
+  /* Accent, accent-alt and white are intentionally unchanged: the brand hues
+     carry enough contrast on the dark surfaces, so the accent stays a
+     one-line change in :root. */
+}

@@ -1,0 +1,86 @@
+/* ==========================================================================
+   Global keyframes. Only what components actually use.
+   Authored with modern `clip-path` insets rather than the deprecated
+   `clip: rect()` property.
+   ========================================================================== */
+
+/* Upper-band slice jitter for the leading glitch layer. */
+@keyframes glitch {
+  0% {
+    clip-path: inset(18% 0 62% 0);
+    transform: translate3d(-2px, 0, 0);
+  }
+  20% {
+    clip-path: inset(72% 0 13% 0);
+    transform: translate3d(2px, 0, 0);
+  }
+  40% {
+    clip-path: inset(8% 0 84% 0);
+    transform: translate3d(-3px, 0, 0);
+  }
+  60% {
+    clip-path: inset(46% 0 39% 0);
+    transform: translate3d(1px, 0, 0);
+  }
+  80% {
+    clip-path: inset(88% 0 4% 0);
+    transform: translate3d(-1px, 0, 0);
+  }
+  100% {
+    clip-path: inset(31% 0 55% 0);
+    transform: translate3d(2px, 0, 0);
+  }
+}
+
+/* Counter-phase slice jitter for the trailing glitch layer. */
+@keyframes glitch-alt {
+  0% {
+    clip-path: inset(66% 0 21% 0);
+    transform: translate3d(2px, 0, 0);
+  }
+  20% {
+    clip-path: inset(24% 0 68% 0);
+    transform: translate3d(-2px, 0, 0);
+  }
+  40% {
+    clip-path: inset(91% 0 2% 0);
+    transform: translate3d(3px, 0, 0);
+  }
+  60% {
+    clip-path: inset(5% 0 79% 0);
+    transform: translate3d(-1px, 0, 0);
+  }
+  80% {
+    clip-path: inset(52% 0 33% 0);
+    transform: translate3d(1px, 0, 0);
+  }
+  100% {
+    clip-path: inset(12% 0 74% 0);
+    transform: translate3d(-2px, 0, 0);
+  }
+}
+
+/* Scroll affordance: a small downward nudge that settles back. */
+@keyframes scroll-hint {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+    opacity: 1;
+  }
+  50% {
+    transform: translate3d(0, 8px, 0);
+    opacity: 0.6;
+  }
+}
+
+/* Entrance reveal for sections and list items. */
+@keyframes reveal {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 16px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
