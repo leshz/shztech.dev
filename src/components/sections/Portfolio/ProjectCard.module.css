@@ -23,6 +23,47 @@
     transform var(--transition-base);
 }
 
+/* ---- Screenshot ---------------------------------------------------------
+   Bleeds to the card edges: negative margins cancel the card's own padding,
+   so the shot reads as part of the card rather than a framed inset. Fixed
+   16/9 ratio keeps every card's image the same height regardless of the
+   source capture, which matters for the equal-height grid rows.
+   ---------------------------------------------------------------------- */
+
+.shot {
+  margin: calc(var(--space-5) * -1) calc(var(--space-5) * -1) var(--space-4);
+  border-bottom: 1px solid var(--color-border);
+  overflow: hidden;
+}
+
+.shotImage {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  /* Anchor to the top: a landing page's hero is the informative part, so
+     crop from the bottom rather than centring. */
+  object-fit: cover;
+  object-position: top center;
+  transition: transform var(--transition-base);
+}
+
+.card:hover .shotImage,
+.card:focus-within .shotImage {
+  transform: scale(1.02);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .shotImage {
+    transition: none;
+  }
+
+  .card:hover .shotImage,
+  .card:focus-within .shotImage {
+    transform: none;
+  }
+}
+
 /* Whole-card hover affordance, without making the card one giant anchor. */
 .card:hover {
   border-color: var(--color-accent);

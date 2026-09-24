@@ -87,7 +87,17 @@ export function PortfolioGrid() {
                no colour or font-size literal is involved. */
             style={{ "--card-index": index } as CSSProperties}
           >
-            <ProjectCard project={project} className={styles.card} />
+            {/*
+              The first row is above the fold, so its screenshots must load
+              eagerly — Next flagged the first card's image as the LCP element
+              while it was lazy-loaded, which delays the metric for no reason.
+              Later cards stay lazy.
+            */}
+            <ProjectCard
+              project={project}
+              className={styles.card}
+              priority={index < 3}
+            />
           </li>
         ))}
       </ul>

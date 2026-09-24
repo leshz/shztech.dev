@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { Button } from "@/components/ui/Button/Button";
 import { Icon } from "@/components/ui/Icon/Icon";
 import type { Project } from "@/data/projects";
@@ -12,6 +13,11 @@ export interface ProjectCardProps {
    * `string | undefined`.
    */
   readonly className?: string | undefined;
+  /**
+   * Load this card's screenshot eagerly. Set for above-the-fold cards: a
+   * lazy-loaded LCP image delays the metric, which Next warns about.
+   */
+  readonly priority?: boolean | undefined;
 }
 
 /**
@@ -25,13 +31,38 @@ export interface ProjectCardProps {
  * separate, individually focusable targets. There is no lightbox and no
  * screenshot gallery by product decision.
  */
-export function ProjectCard({ project, className }: ProjectCardProps) {
-  const { name, description, stack, repoUrl, liveUrl, featured } = project;
+export function ProjectCard({
+  project,
+  className,
+  priority = false,
+}: ProjectCardProps) {
+  const { name, description, stack, repoUrl, liveUrl, featured, image } =
+    project;
 
   const cardClassName = [styles.card, className].filter(Boolean).join(" ");
 
   return (
     <article className={cardClassName}>
+      {/*
+        Screenshot only for projects that have one. It is decorative relative
+        to the card's own heading and links, but it carries real information
+        about the product, so it gets a descriptive alt rather than being
+        hidden from assistive tech.
+      */}
+      {image !== undefined ? (
+        <div className={styles.shot}>
+          <Image
+            src={image.src}
+            alt={image.alt}
+            width={image.width}
+            height={image.height}
+            sizes="(max-width: 30rem) 100vw, (max-width: 60rem) 50vw, 33vw"
+            priority={priority}
+            className={styles.shotImage}
+          />
+        </div>
+      ) : null}
+
       <div className={styles.head}>
         <Icon name="code" size={18} className={styles.headIcon} />
         <h3 className={styles.name}>{name}</h3>
@@ -69,16 +100,23 @@ export function ProjectCard({ project, className }: ProjectCardProps) {
             Live
           </Button>
         ) : null}
-        <Button
-          href={repoUrl}
-          variant="outline"
-          size="sm"
-          icon="github"
-          iconPosition="right"
-          aria-label={`${name} — source code on GitHub`}
-        >
-          Code
-        </Button>
+        {/*
+          Same guard for `repoUrl`: it is optional because some work ships as
+          a product with a private codebase. A "Code" button pointing nowhere
+          is worse than no button.
+        */}
+        {repoUrl !== undefined ? (
+          <Button
+            href={repoUrl}
+            variant="outline"
+            size="sm"
+            icon="github"
+            iconPosition="right"
+            aria-label={`${name} — source code on GitHub`}
+          >
+            Code
+          </Button>
+        ) : null}
       </div>
     </article>
   );

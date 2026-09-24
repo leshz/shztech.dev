@@ -3,20 +3,51 @@
 // `liveUrl` is optional — omit the key entirely when there's no live site
 // (exactOptionalPropertyTypes forbids assigning `liveUrl: undefined`).
 
-export type ProjectCategory = "E-commerce" | "Open Source" | "Tooling";
+export type ProjectCategory = "SaaS" | "E-commerce" | "Open Source" | "Tooling";
 
 export type Project = {
   readonly slug: string;
   readonly name: string;
   readonly description: string;
   readonly stack: readonly string[];
-  readonly repoUrl: string;
+  /**
+   * Public repository. Optional: some work ships as a product with a private
+   * codebase, and rendering a dead "Code" link would be worse than omitting it.
+   */
+  readonly repoUrl?: string;
   readonly liveUrl?: string;
+  /**
+   * Screenshot under `public/`, for projects where the live site is the thing
+   * worth showing. Omit for repo-only projects.
+   */
+  readonly image?: {
+    readonly src: string;
+    readonly width: number;
+    readonly height: number;
+    /** Describes what the screenshot shows, for screen readers. */
+    readonly alt: string;
+  };
   readonly featured: boolean;
   readonly category: ProjectCategory;
 };
 
 export const projects = [
+  {
+    slug: "legal-hermes",
+    name: "Legal Hermes",
+    description:
+      "SaaS that monitors court cases in Colombia's judicial branch and emails lawyers the moment a case changes — replacing a manual daily check with automated change detection and a full history of every modification found.",
+    stack: ["TypeScript", "Next.js", "SaaS", "Automation"],
+    liveUrl: "https://legalhermes.com",
+    image: {
+      src: "/images/projects/legalhermes.webp",
+      width: 1280,
+      height: 720,
+      alt: "Legal Hermes landing page: the headline 'Nunca más pierda una actuación judicial' above a description of automated court-case monitoring, with request-a-demo and how-it-works buttons.",
+    },
+    featured: true,
+    category: "SaaS",
+  },
   {
     slug: "evokare",
     name: "evokare",

@@ -46,7 +46,18 @@ export function Footer() {
           © {year} {site.name}
         </p>
 
-        <p className={styles.smallPrint}>Built with Next.js and TypeScript.</p>
+        {/*
+          The emoji carries meaning here (arepa = Colombia), so it is not
+          decorative: `role="img"` plus a label makes a screen reader announce
+          "arepa" instead of "flatbread" or nothing at all. U+1FAD3 FLATBREAD
+          is the closest codepoint — Unicode has no dedicated arepa.
+        */}
+        <p className={styles.smallPrint}>
+          Made with love and{" "}
+          <span role="img" aria-label="arepa">
+            🫓
+          </span>
+        </p>
       </div>
     </footer>
   );
