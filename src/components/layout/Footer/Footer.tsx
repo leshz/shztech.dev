@@ -47,13 +47,17 @@ export function Footer() {
         </p>
 
         {/*
-          The emoji carries meaning here (arepa = Colombia), so it is not
-          decorative: `role="img"` plus a label makes a screen reader announce
-          "arepa" instead of "flatbread" or nothing at all. U+1FAD3 FLATBREAD
-          is the closest codepoint — Unicode has no dedicated arepa.
+          Both emoji carry meaning, so neither is decorative: `role="img"`
+          plus a label makes a screen reader announce "love" and "arepa"
+          rather than "red heart" and "flatbread" — or nothing at all.
+          U+1FAD3 FLATBREAD is the closest codepoint; Unicode has no arepa.
         */}
         <p className={styles.smallPrint}>
-          Made with love and{" "}
+          Made with{" "}
+          <span role="img" aria-label="love">
+            ❤️
+          </span>{" "}
+          and{" "}
           <span role="img" aria-label="arepa">
             🫓
           </span>
