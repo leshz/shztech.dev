@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" width="1280" height="720" role="img" aria-label="Source-only project: no live site to screenshot">
+  <!--
+    Fallback card image for projects with no live site to capture
+    (libraries, plugins, CLI tools). Keeps every portfolio card the same
+    height so the grid rows stay even.
+
+    Self-contained on purpose: an SVG loaded through next/image renders in its
+    own document and cannot read the page's CSS custom properties, so the
+    palette is inlined. The mid-tone greys and the accent are chosen to sit
+    correctly on BOTH the light (#fafafa) and dark (#31313a) card surfaces
+    rather than matching either one exactly.
+  -->
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#3a3a44" />
+      <stop offset="100%" stop-color="#26262d" />
+    </linearGradient>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M40 0H0V40" fill="none" stroke="#ffffff" stroke-opacity="0.04" stroke-width="1" />
+    </pattern>
+  </defs>
+
+  <rect width="1280" height="720" fill="url(#bg)" />
+  <rect width="1280" height="720" fill="url(#grid)" />
+
+  <!-- Terminal window: signals "this ships as code, not as a page". -->
+  <g transform="translate(340 210)">
+    <rect x="0" y="0" width="600" height="300" rx="10" fill="#1c1c22" stroke="#4a4a56" stroke-width="1.5" />
+
+    <!-- Title bar -->
+    <path d="M0 42 H600" stroke="#4a4a56" stroke-width="1.5" />
+    <circle cx="26" cy="21" r="6" fill="#f26b38" />
+    <circle cx="48" cy="21" r="6" fill="#ede574" />
+    <circle cx="70" cy="21" r="6" fill="#4a4a56" />
+
+    <!-- Prompt lines. Bars stand in for code, so there is no text to -->
+    <!-- translate or mis-scale at small card sizes. -->
+    <g font-family="ui-monospace, SFMono-Regular, monospace" font-size="19">
+      <text x="30" y="92" fill="#f26b38">$</text>
+      <rect x="56" y="78" width="210" height="15" rx="3" fill="#6f6f7d" />
+
+      <text x="30" y="136" fill="#f26b38">$</text>
+      <rect x="56" y="122" width="320" height="15" rx="3" fill="#57575f" />
+
+      <text x="30" y="180" fill="#f26b38">$</text>
+      <rect x="56" y="166" width="150" height="15" rx="3" fill="#57575f" />
+
+      <rect x="56" y="210" width="260" height="15" rx="3" fill="#44444c" />
+      <rect x="56" y="244" width="190" height="15" rx="3" fill="#44444c" />
+
+      <!-- Cursor -->
+      <rect x="258" y="244" width="11" height="17" fill="#f26b38" />
+    </g>
+  </g>
+</svg>

@@ -3,7 +3,12 @@
 // `liveUrl` is optional — omit the key entirely when there's no live site
 // (exactOptionalPropertyTypes forbids assigning `liveUrl: undefined`).
 
-export type ProjectCategory = "SaaS" | "E-commerce" | "Open Source" | "Tooling";
+export type ProjectCategory =
+  | "SaaS"
+  | "Client Work"
+  | "E-commerce"
+  | "Open Source"
+  | "Tooling";
 
 export type Project = {
   readonly slug: string;
@@ -31,6 +36,18 @@ export type Project = {
   readonly category: ProjectCategory;
 };
 
+/**
+ * Fallback card image for source-only projects — a library, a plugin, a CLI —
+ * where there is no page to screenshot. Without it those cards would be
+ * noticeably shorter than the ones with a shot, leaving the grid uneven.
+ */
+const PLACEHOLDER_IMAGE = {
+  src: "/images/projects/placeholder.svg",
+  width: 1280,
+  height: 720,
+  alt: "Stylised terminal window, standing in for a project that ships as source rather than as a website.",
+} as const;
+
 export const projects = [
   {
     slug: "legal-hermes",
@@ -49,14 +66,21 @@ export const projects = [
     category: "SaaS",
   },
   {
-    slug: "evokare",
-    name: "evokare",
-    description: "Mono repo for e-commerce with Strapi and Next.js.",
-    stack: ["TypeScript", "Next.js", "Strapi"],
+    slug: "elisa-horta",
+    name: "Elisa Horta",
+    description:
+      "Site for a Bogotá clinical psychologist with 36+ years in practice: appointment booking, an editorial blog, and content managed through Strapi so she can publish without a developer. Built from the evokare monorepo.",
+    stack: ["TypeScript", "Next.js", "Strapi", "SEO"],
     repoUrl: "https://github.com/leshz/evokare",
-    liveUrl: "https://elisa-horta.vercel.app",
+    liveUrl: "https://elisahorta.com.co",
+    image: {
+      src: "/images/projects/elisahorta.webp",
+      width: 1280,
+      height: 720,
+      alt: "Elisa Horta's site: the headline 'Reconectando con tu bienestar' over a violet gradient, beside a photo of two people holding hands, with buttons to book an appointment and read her story.",
+    },
     featured: true,
-    category: "E-commerce",
+    category: "Client Work",
   },
   {
     slug: "mercadopago-strapi",
@@ -65,6 +89,7 @@ export const projects = [
       "A powerful plugin for integrating MercadoPago with the Strapi CMS. Simplifies the integration process, allowing you to easily handle payments and manage products to create a lightweight e-commerce solution using MercadoPago's API.",
     stack: ["TypeScript", "Strapi"],
     repoUrl: "https://github.com/leshz/mercadopago-strapi",
+    image: PLACEHOLDER_IMAGE,
     featured: true,
     category: "Open Source",
   },
@@ -75,7 +100,18 @@ export const projects = [
       "A digital platform dedicated to helping you find the perfect balance in your daily life. A space where wellness, spirituality, and self-care meet. Full e-commerce with payments, SEO optimization, and a Strapi headless CMS.",
     stack: ["TypeScript", "Next.js 15", "MercadoPago SDK", "Strapi"],
     repoUrl: "https://github.com/leshz/sagrada-cura",
-    liveUrl: "https://sagradacura.com",
+    /*
+     * No `liveUrl`: the domain now serves a farewell page, so linking it would
+     * send visitors to a closing notice rather than the work. The screenshot
+     * below is the storefront as it actually ran, recovered from the Internet
+     * Archive (snapshot 2025-07-14) while the live site still existed.
+     */
+    image: {
+      src: "/images/projects/sagradacura.webp",
+      width: 1280,
+      height: 720,
+      alt: "Sagrada Cura storefront: a product photo of a cleansing spray against tree bark under the heading 'Terapias holísticas', beside a promotion for an energy-healing workshop.",
+    },
     featured: true,
     category: "E-commerce",
   },
@@ -86,6 +122,7 @@ export const projects = [
       "Automated script to set up a Mac from scratch. Perfect for when you format your computer or switch to a new Mac.",
     stack: ["Shell", "Zsh", "Bash"],
     repoUrl: "https://github.com/leshz/mac-os-setup",
+    image: PLACEHOLDER_IMAGE,
     featured: false,
     category: "Tooling",
   },
