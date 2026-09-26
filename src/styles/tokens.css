@@ -104,7 +104,7 @@
   --form-border-hover: 1px solid var(--color-accent);
 
   /* ---- Primitives ------------------------------------------------------- */
-  --radius: 0;
+  --radius: 3px;
   --transition-base: 0.3s ease;
   --transition-slow: 0.6s ease;
 

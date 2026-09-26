@@ -22,6 +22,7 @@
   aspect-ratio: 1 / 1;
   overflow: hidden;
   border: 1px solid var(--color-border);
+  border-radius: var(--radius);
   background: var(--color-surface);
   margin-inline: auto;
 }
@@ -34,6 +35,7 @@
 
 .portrait {
   object-fit: cover;
+  border-radius: var(--radius);
 }
 
 .bio {
